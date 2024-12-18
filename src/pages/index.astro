@@ -186,15 +186,35 @@ const statusStyles = {
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
         <!-- Coming Soon / In the Works -->
         <div
-          class="group p-8 bg-light-soft/10 dark:bg-dark-soft/5 rounded-xl shadow-md dark:shadow-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:dark:shadow-white/10 backdrop-blur-sm"
+          class="group p-8 bg-white dark:bg-dark-card rounded-xl shadow-md dark:shadow-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:dark:shadow-white/10 backdrop-blur-sm"
         >
           <div
             class="mb-6 text-light-text dark:text-dark-text group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors duration-300"
           >
-            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+            <svg
+              class="w-12 h-12"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <!-- Simple checklist -->
               <path
-                d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"
               ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M9 5a2 2 0 012-2h2a2 2 0 012 2v0a2 2 0 01-2 2h-2a2 2 0 01-2-2v0z"
+              ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M9 14l2 2 4-4"></path>
             </svg>
           </div>
           <h3
@@ -242,16 +262,34 @@ const statusStyles = {
 
         <!-- Currently Brewing / In the Tank -->
         <div
-          class="group p-8 bg-light-soft/10 dark:bg-dark-soft/5 rounded-xl shadow-md dark:shadow-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:dark:shadow-white/10 backdrop-blur-sm"
+          class="group p-8 bg-white dark:bg-dark-card rounded-xl shadow-md dark:shadow-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:dark:shadow-white/10 backdrop-blur-sm"
         >
           <div
             class="mb-6 text-light-text dark:text-dark-text group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors duration-300"
           >
-            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+            <svg
+              class="w-12 h-12"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <!-- Wooden barrel -->
               <path
-                fill-rule="evenodd"
-                d="M10 2c-2.236 0-4.43.18-6.57.524C1.993 2.755 1 4.014 1 5.426v5.148c0 1.413.993 2.67 2.43 2.902 1.168.188 2.352.327 3.55.414.28.02.521.18.642.413l1.713 3.293a.75.75 0 001.33 0l1.713-3.293a.783.783 0 01.642-.413 41.102 41.102 0 003.55-.414c1.437-.232 2.43-1.49 2.43-2.902V5.426c0-1.413-.993-2.67-2.43-2.902A41.289 41.289 0 0010 2zM6.75 6a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5zm0 2.5a.75.75 0 000 1.5h3.5a.75.75 0 000-1.5h-3.5z"
-                clip-rule="evenodd"></path>
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M6 8h12M6 16h12"></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M7 4h10M7 20h10"></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M8 4c-2 0-3 1.79-3 4v8c0 2.21 1 4 3 4M16 4c2 0 3 1.79 3 4v8c0 2.21-1 4-3 4"
+              ></path>
             </svg>
           </div>
           <h3
@@ -299,15 +337,29 @@ const statusStyles = {
 
         <!-- Recently Tapped / In the Keg -->
         <div
-          class="group p-8 bg-light-soft/10 dark:bg-dark-soft/5 rounded-xl shadow-md dark:shadow-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:dark:shadow-white/10 backdrop-blur-sm"
+          class="group p-8 bg-white dark:bg-dark-card rounded-xl shadow-md dark:shadow-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:dark:shadow-white/10 backdrop-blur-sm"
         >
           <div
             class="mb-6 text-light-text dark:text-dark-text group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors duration-300"
           >
-            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+            <svg
+              class="w-12 h-12"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <!-- Beer mug with foam -->
               <path
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M17 6h1a2 2 0 012 2v2a2 2 0 01-2 2h-1 M6 6h11v12a2 2 0 01-2 2H8a2 2 0 01-2-2V6z"
               ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M7 9s1-1 3-1 3 1 3 1 1-1 3-1"></path>
             </svg>
           </div>
           <h3

@@ -20,6 +20,7 @@ module.exports = {
           accent: '#E9B872',    // Warm sandstone glow
           muted: '#9B8E7E',     // Desert rock shadows
           soft: '#2A2838',      // Twilight purple-blue
+          card: '#1F2937',      // Tailwind's gray-800
         }
       },
       fontFamily: {

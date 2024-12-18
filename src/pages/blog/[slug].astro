@@ -1,23 +1,27 @@
 ---
+import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getCollection, getEntry } from "astro:content";
 
 export async function getStaticPaths() {
-  const blogEntries = await getCollection("blog");
-  return blogEntries.map((entry) => ({
-    params: { slug: entry.slug },
-    props: { entry },
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
   }));
 }
 
-const { entry } = Astro.props;
-const { Content } = await entry.render();
+type Props = {
+  post: CollectionEntry<"blog">;
+};
+
+const { post } = Astro.props;
+const { Content } = await post.render();
 const permalink = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <BaseLayout
-  title={entry.data.title}
-  description={entry.data.description}
+  title={post.data.title}
+  description={post.data.description}
   permalink={permalink}
   current="blog"
 >
@@ -29,20 +33,20 @@ const permalink = new URL(Astro.url.pathname, Astro.site).href;
           class="text-sm text-forest-green/60 dark:text-desert-sand/60 font-medium mb-4"
         >
           {
-            new Date(entry.data.publishDate).toLocaleDateString("en-us", {
+            new Date(post.data.publishDate).toLocaleDateString("en-us", {
               year: "numeric",
               month: "long",
               day: "numeric",
             })
           }
-          {entry.data.author && <span class="mx-2">·</span>}
-          {entry.data.author && <span>{entry.data.author}</span>}
+          {post.data.author && <span class="mx-2">·</span>}
+          {post.data.author && <span>{post.data.author}</span>}
         </div>
-        <h1 class="text-4xl md:text-5xl font-bold mb-6">{entry.data.title}</h1>
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">{post.data.title}</h1>
         {
-          entry.data.description && (
+          post.data.description && (
             <p class="text-xl text-forest-green/80 dark:text-desert-sand/80 max-w-2xl mx-auto">
-              {entry.data.description}
+              {post.data.description}
             </p>
           )
         }
@@ -54,10 +58,10 @@ const permalink = new URL(Astro.url.pathname, Astro.site).href;
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <article>
       {
-        entry.data.image && (
+        post.data.image && (
           <img
-            src={entry.data.image}
-            alt={entry.data.title}
+            src={post.data.image}
+            alt={post.data.title}
             class="w-full aspect-[21/9] object-cover rounded-xl shadow-lg mb-12"
           />
         )
@@ -68,10 +72,10 @@ const permalink = new URL(Astro.url.pathname, Astro.site).href;
       </div>
 
       {
-        entry.data.tags && entry.data.tags.length > 0 && (
+        post.data.tags && post.data.tags.length > 0 && (
           <div class="mt-12 pt-6 border-t border-forest-green/10 dark:border-desert-sand/10">
             <div class="flex flex-wrap gap-2">
-              {entry.data.tags.map((tag: string) => (
+              {post.data.tags.map((tag: string) => (
                 <span class="px-3 py-1 bg-forest-green/5 dark:bg-desert-sand/5 rounded-full text-sm text-forest-green/60 dark:text-desert-sand/60">
                   {tag}
                 </span>
