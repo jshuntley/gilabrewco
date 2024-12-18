@@ -77,7 +77,7 @@ const { current = "" } = Astro.props;
         <!-- Theme Toggle Switch -->
         <button
           id="theme-toggle"
-          class="relative w-12 h-6 rounded-full bg-light-text/30 dark:bg-dark-text/30 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:ring-offset-2 focus:ring-offset-light-base dark:focus:ring-offset-dark-base border border-light-text/20 dark:border-dark-text/20"
+          class="relative w-14 h-7 rounded-full bg-light-soft dark:bg-dark-soft/50 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:ring-offset-2 focus:ring-offset-light-base dark:focus:ring-offset-dark-base shadow-inner"
           aria-label="Toggle theme"
           role="switch"
           aria-checked="false"
@@ -85,7 +85,7 @@ const { current = "" } = Astro.props;
           <span class="sr-only">Toggle dark mode</span>
           <!-- Moon icon (left side) -->
           <svg
-            class="absolute left-1 top-1 w-4 h-4 text-dark-accent dark:text-dark-text/70"
+            class="absolute left-1.5 top-1.5 w-4 h-4 text-dark-accent/80 dark:text-dark-text transition-opacity duration-300"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -95,7 +95,7 @@ const { current = "" } = Astro.props;
           </svg>
           <!-- Sun icon (right side) -->
           <svg
-            class="absolute right-1 top-1 w-4 h-4 text-light-text/70 dark:text-light-accent"
+            class="absolute right-1.5 top-1.5 w-4 h-4 text-light-text/80 dark:text-light-accent transition-opacity duration-300"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -105,7 +105,7 @@ const { current = "" } = Astro.props;
           </svg>
           <!-- Toggle Circle -->
           <span
-            class="absolute top-0 left-0 w-6 h-6 rounded-full bg-light-base dark:bg-dark-base transform transition-transform duration-200 dark:translate-x-6 shadow-md"
+            class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white dark:bg-dark-accent transform transition-transform duration-300 ease-in-out dark:translate-x-7 shadow-md"
           >
           </span>
         </button>
