@@ -7,5 +7,6 @@ export default defineConfig({
   site: 'https://gilabrewing.com',
   integrations: [
     tailwind(),
-  ]
+  ],
+
 });

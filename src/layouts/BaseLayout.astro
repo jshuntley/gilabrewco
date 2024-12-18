@@ -7,7 +7,7 @@ const { title, description, permalink, current = "" } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <BaseHead {title} {description} {permalink} />
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -20,11 +20,9 @@ const { title, description, permalink, current = "" } = Astro.props;
   <body>
     <div class="layout">
       <Header current={current} />
-
       <main class="flex-1 w-full">
         <slot />
       </main>
-
       <Footer />
     </div>
   </body>
@@ -32,6 +30,34 @@ const { title, description, permalink, current = "" } = Astro.props;
 
 <style>
   .layout {
-    @apply flex flex-col min-h-screen;
+    @apply flex flex-col min-h-screen
+           bg-gradient-to-b from-light-base to-light-soft
+           dark:from-dark-base dark:to-dark-soft;
+  }
+
+  /* Smooth scrolling for anchor links */
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-light-soft dark:bg-dark-soft;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-light-accent/50 dark:bg-dark-accent/50
+           rounded-full
+           hover:bg-light-accent dark:hover:bg-dark-accent;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-light-accent/20 dark:bg-dark-accent/20;
   }
 </style>

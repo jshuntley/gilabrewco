@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import { Image } from "astro:assets";
 
 const { content } = Astro.props;
 const formattedDate = new Date(content.publishDate).toLocaleDateString(
@@ -47,9 +48,11 @@ const formattedDate = new Date(content.publishDate).toLocaleDateString(
       <!-- Featured Image -->
       {
         content.image && (
-          <img
+          <Image
             src={content.image}
             alt={content.title}
+            width={1200}
+            height={514}
             class="w-full aspect-[21/9] object-cover rounded-xl shadow-lg mb-12"
           />
         )

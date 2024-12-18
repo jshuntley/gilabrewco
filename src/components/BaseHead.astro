@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import "../styles/fonts.css";
 import "../styles/global.css";
 
@@ -40,8 +40,6 @@ const socialUrl = new URL(
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={socialUrl} />
 
-<ViewTransitions />
-
 <!-- This is intentionally inlined to avoid FOUC -->
 <script is:inline>
   const root = document.documentElement;
@@ -63,6 +61,8 @@ const socialUrl = new URL(
 
   window.localStorage.setItem("theme", theme);
 </script>
+
+<ClientRouter />
 
 <script>
   // Handle theme persistence during view transitions
