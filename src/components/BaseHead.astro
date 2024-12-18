@@ -10,7 +10,10 @@ export interface Props {
 }
 
 const { title, description, permalink } = Astro.props;
-const socialUrl = Astro.site.href + "assets/social.png";
+const socialUrl = new URL(
+  "assets/social.png",
+  Astro.site?.href ?? "https://gilabrewing.com/"
+).href;
 ---
 
 <!-- Global Metadata -->
@@ -42,13 +45,33 @@ const socialUrl = Astro.site.href + "assets/social.png";
 <!-- This is intentionally inlined to avoid FOUC -->
 <script is:inline>
   const root = document.documentElement;
-  const theme = localStorage.getItem("theme");
-  if (
-    theme === "dark" ||
-    (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
-  ) {
-    root.classList.add("theme-dark");
+  const theme = (() => {
+    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+      return localStorage.getItem("theme");
+    }
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  })();
+
+  if (theme === "light") {
+    root.classList.remove("dark");
   } else {
-    root.classList.remove("theme-dark");
+    root.classList.add("dark");
   }
+
+  window.localStorage.setItem("theme", theme);
+</script>
+
+<script>
+  // Handle theme persistence during view transitions
+  document.addEventListener("astro:after-swap", () => {
+    const theme = localStorage.getItem("theme");
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  });
 </script>
