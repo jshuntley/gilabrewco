@@ -9,7 +9,7 @@ module.exports = {
         light: {
           base: '#F5F3EE',      // Warm off-white background
           text: '#4A4B40',      // Deep sage text
-          accent: '#B8956C',    // Warm sandstone
+          accent: '#7C8B7D',    // Sage green accent
           muted: '#A4A69C',     // Muted sage
           soft: '#E6DED1',      // Soft sand
           card: '#FFFFFF',      // Pure white for cards
