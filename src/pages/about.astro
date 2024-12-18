@@ -1,0 +1,113 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "About | Gila Brewing Co.";
+const description = "Learn about our brewing philosophy and history";
+const permalink = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  permalink={permalink}
+  current="about"
+>
+  <!-- Hero Section -->
+  <div class="relative py-24 bg-desert-sand dark:bg-forest-green">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">Our Story</h1>
+        <p
+          class="text-xl text-forest-green/80 dark:text-desert-sand/80 max-w-2xl mx-auto"
+        >
+          Crafting authentic ales inspired by the untamed spirit of the Gila
+          wilderness
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Sections -->
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="space-y-16">
+      <!-- Mission Section -->
+      <section class="grid md:grid-cols-2 gap-8 items-center">
+        <div>
+          <h2 class="text-3xl font-bold mb-4">Our Mission</h2>
+          <p class="text-lg text-forest-green/80 dark:text-desert-sand/80">
+            We believe in crafting beers that tell the story of our landscape.
+            Every brew is an homage to the wild beauty of the Gila National
+            Forest, using locally sourced ingredients whenever possible.
+          </p>
+        </div>
+        <img
+          src="/assets/brewing-process.webp"
+          alt="Our brewing process"
+          class="rounded-xl shadow-lg"
+        />
+      </section>
+
+      <!-- Process Section -->
+      <section
+        class="grid md:grid-cols-2 gap-8 items-center md:grid-flow-dense"
+      >
+        <div class="md:col-start-2">
+          <h2 class="text-3xl font-bold mb-4">The Process</h2>
+          <p class="text-lg text-forest-green/80 dark:text-desert-sand/80">
+            Our small-batch brewing process combines traditional techniques with
+            modern innovation. We take pride in every step, from grain selection
+            to the final pour, ensuring each beer reflects our commitment to
+            quality and sustainability.
+          </p>
+        </div>
+        <img
+          src="/assets/brewery.webp"
+          alt="Our brewery"
+          class="rounded-xl shadow-lg md:col-start-1"
+        />
+      </section>
+
+      <!-- Team Section -->
+      <section class="text-center">
+        <h2 class="text-3xl font-bold mb-8">Meet the Team</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+          {/* Add team member cards here */}
+          <div class="space-y-4">
+            <img
+              src="/assets/team/brewer1.webp"
+              alt="Head Brewer"
+              class="w-48 h-48 rounded-full mx-auto object-cover"
+            />
+            <div>
+              <h3 class="text-xl font-bold">John Smith</h3>
+              <p class="text-forest-green/80 dark:text-desert-sand/80">
+                Head Brewer
+              </p>
+            </div>
+          </div>
+          {/* Add more team members */}
+        </div>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-image {
+    float: right;
+    margin: -3em -7em 2em 2em;
+    max-width: 300px;
+  }
+
+  .about-image img {
+    border-radius: 8px;
+    margin-bottom: 1.5em;
+  }
+
+  @media (max-width: 1020px) {
+    .about-image {
+      float: none;
+      margin: 0 auto 2em;
+    }
+  }
+</style>

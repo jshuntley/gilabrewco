@@ -1,0 +1,273 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import type { Brew } from "../types/brew";
+
+const title = "Gila Brewing Co.";
+const description =
+  "Craft brewing inspired by the wilderness of the Gila National Forest";
+const permalink = new URL(
+  Astro.url.pathname,
+  Astro.site?.href ?? "https://gilabrewing.com"
+).href;
+
+// Get all brews
+const brewFiles = await Astro.glob<Brew>("../content/brews/*.md");
+const brews = brewFiles.map((file) => ({
+  ...file.frontmatter,
+}));
+
+// Sort and group brews by status
+const tappedBrews = brews
+  .filter((brew) => brew.status === "tapped")
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 2);
+
+const brewingBrews = brews
+  .filter((brew) => brew.status === "brewing")
+  .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+  .slice(0, 2);
+
+const upcomingBrews = brews
+  .filter((brew) => brew.status === "upcoming")
+  .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+  .slice(0, 2);
+
+// Status-specific styling
+const statusStyles = {
+  tapped: "text-canyon-red",
+  brewing: "text-sky-blue",
+  upcoming: "text-forest-green/60 dark:text-desert-sand/60",
+};
+---
+
+<BaseLayout title={title} description={description} permalink={permalink}>
+  <!-- Hero Section -->
+  <div
+    class="relative h-[calc(100vh-4rem)] flex flex-col justify-center items-center text-center"
+  >
+    <!-- Background Image with Overlay -->
+    <div
+      class="absolute inset-0 z-0"
+      style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/assets/gila-forest.jpg') center/cover no-repeat;"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"
+      >
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 px-4 max-w-7xl mx-auto -mt-16">
+      <h1
+        class="text-[clamp(3rem,8vw,6rem)] font-bold text-white mb-6 opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards]"
+      >
+        Gila Brewing Co.
+      </h1>
+      <p
+        class="text-[clamp(1.2rem,3vw,2rem)] text-white/90 max-w-3xl mx-auto mb-12 opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards_0.2s]"
+      >
+        Crafting ales as wild and pure as the wilderness that inspires us
+      </p>
+      <div
+        class="flex gap-6 justify-center opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards_0.4s]"
+      >
+        <a href="/blog" class="btn btn-primary"> Explore Our Brews </a>
+        <a
+          href="#about"
+          class="px-8 py-4 bg-white/10 text-white rounded-lg font-sans font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white/20 hover:-translate-y-0.5 hover:shadow-lg backdrop-blur-sm"
+        >
+          Learn More
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <a
+      href="#about"
+      class="absolute bottom-4 left-1/2 -translate-x-1/2 animate-bounce hover:text-canyon-red transition-colors duration-200 cursor-pointer"
+      aria-label="Scroll to What's Brewing section"
+    >
+      <svg
+        class="w-6 h-6 text-white"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+      </svg>
+    </a>
+
+    <!-- Add smooth scroll behavior -->
+    <script>
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+    </script>
+  </div>
+
+  <!-- Features Section -->
+  <div class="py-24 bg-desert-sand dark:bg-forest-green" id="about">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-20">
+        <h2
+          class="text-4xl font-bold text-forest-green dark:text-desert-sand mb-4"
+        >
+          What's Brewing
+        </h2>
+        <p
+          class="text-xl text-forest-green/80 dark:text-desert-sand/80 max-w-3xl mx-auto"
+        >
+          From tank to tap, here's what's happening in our brewhouse
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <!-- Recently Tapped -->
+        <div
+          class="group p-8 bg-white/10 dark:bg-white/5 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl backdrop-blur-sm"
+        >
+          <div
+            class="mb-6 text-forest-green dark:text-desert-sand group-hover:text-canyon-red transition-colors duration-300"
+          >
+            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+              ></path>
+            </svg>
+          </div>
+          <h3
+            class="text-2xl font-bold text-forest-green dark:text-desert-sand mb-4"
+          >
+            Recently Tapped
+          </h3>
+          <div class="space-y-4">
+            {
+              tappedBrews.map((brew) => (
+                <div class="border-b border-forest-green/10 dark:border-desert-sand/10 pb-4">
+                  <h4 class="font-bold mb-1">{brew.name}</h4>
+                  <div class="text-sm text-forest-green/60 dark:text-desert-sand/60 mb-2">
+                    {brew.style} • {brew.abv}% ABV
+                  </div>
+                  <p class="text-forest-green/90 dark:text-desert-sand/90">
+                    {brew.description}
+                  </p>
+                  {brew.notes && (
+                    <p class="text-sm text-forest-green/80 dark:text-desert-sand/80 mt-2">
+                      {brew.notes}
+                    </p>
+                  )}
+                  <span class={statusStyles[brew.status]}>{brew.details}</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <!-- Currently Brewing -->
+        <div
+          class="group p-8 bg-white/10 dark:bg-white/5 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl backdrop-blur-sm"
+        >
+          <div
+            class="mb-6 text-forest-green dark:text-desert-sand group-hover:text-canyon-red transition-colors duration-300"
+          >
+            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fill-rule="evenodd"
+                d="M10 2c-2.236 0-4.43.18-6.57.524C1.993 2.755 1 4.014 1 5.426v5.148c0 1.413.993 2.67 2.43 2.902 1.168.188 2.352.327 3.55.414.28.02.521.18.642.413l1.713 3.293a.75.75 0 001.33 0l1.713-3.293a.783.783 0 01.642-.413 41.102 41.102 0 003.55-.414c1.437-.232 2.43-1.49 2.43-2.902V5.426c0-1.413-.993-2.67-2.43-2.902A41.289 41.289 0 0010 2zM6.75 6a.75.75 0 000 1.5h6.5a.75.75 0 000-1.5h-6.5zm0 2.5a.75.75 0 000 1.5h3.5a.75.75 0 000-1.5h-3.5z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <h3
+            class="text-2xl font-bold text-forest-green dark:text-desert-sand mb-4"
+          >
+            In The Tank
+          </h3>
+          <div class="space-y-4">
+            {
+              brewingBrews.map((brew) => (
+                <div class="border-b border-forest-green/10 dark:border-desert-sand/10 pb-4">
+                  <h4 class="font-bold mb-1">{brew.name}</h4>
+                  <div class="text-sm text-forest-green/60 dark:text-desert-sand/60 mb-2">
+                    {brew.style} • {brew.abv}% ABV
+                  </div>
+                  <p class="text-forest-green/90 dark:text-desert-sand/90">
+                    {brew.description}
+                  </p>
+                  {brew.notes && (
+                    <p class="text-sm text-forest-green/80 dark:text-desert-sand/80 mt-2">
+                      {brew.notes}
+                    </p>
+                  )}
+                  <span class={statusStyles[brew.status]}>{brew.details}</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <!-- Coming Soon -->
+        <div
+          class="group p-8 bg-white/10 dark:bg-white/5 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl backdrop-blur-sm"
+        >
+          <div
+            class="mb-6 text-forest-green dark:text-desert-sand group-hover:text-canyon-red transition-colors duration-300"
+          >
+            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z"
+              ></path>
+            </svg>
+          </div>
+          <h3
+            class="text-2xl font-bold text-forest-green dark:text-desert-sand mb-4"
+          >
+            Up Next
+          </h3>
+          <div class="space-y-4">
+            {
+              upcomingBrews.map((brew) => (
+                <div class="border-b border-forest-green/10 dark:border-desert-sand/10 pb-4">
+                  <h4 class="font-bold mb-1">{brew.name}</h4>
+                  <div class="text-sm text-forest-green/60 dark:text-desert-sand/60 mb-2">
+                    {brew.style} • {brew.abv}% ABV
+                  </div>
+                  <p class="text-forest-green/90 dark:text-desert-sand/90">
+                    {brew.description}
+                  </p>
+                  {brew.notes && (
+                    <p class="text-sm text-forest-green/80 dark:text-desert-sand/80 mt-2">
+                      {brew.notes}
+                    </p>
+                  )}
+                  <span class={statusStyles[brew.status]}>{brew.details}</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

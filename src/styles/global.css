@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-desert-sand text-forest-green dark:bg-forest-green dark:text-desert-sand transition-colors duration-300;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans font-bold text-forest-green dark:text-desert-sand;
+  }
+
+  p {
+    @apply text-forest-green/90 dark:text-desert-sand/90;
+  }
+
+  a {
+    @apply text-canyon-red hover:text-sky-blue transition-colors duration-200;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center
+           px-6 py-3 rounded-lg
+           font-sans font-semibold
+           transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply bg-canyon-red text-white
+           hover:bg-sky-blue hover:-translate-y-0.5 hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply bg-forest-green/10 dark:bg-desert-sand/10
+           text-forest-green dark:text-desert-sand
+           hover:bg-forest-green/20 dark:hover:bg-desert-sand/20;
+  }
+
+  /* Blog post container */
+  .blog-content {
+    @apply prose prose-lg max-w-none
+           dark:prose-invert
+           prose-headings:text-forest-green dark:prose-headings:text-desert-sand
+           prose-a:text-canyon-red prose-a:no-underline hover:prose-a:text-sky-blue
+           prose-img:rounded-lg;
+  }
+}

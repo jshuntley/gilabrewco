@@ -1,0 +1,61 @@
+backend:
+  name: github
+  repo: "jshuntley/gilabrewco" # Adjust this
+  branch: main
+  base_url: "https://decap.gilabrewco.com" # Your OAuth proxy domain
+
+site_url: "https://gilabrewco.com"
+
+media_folder: "public/assets/images/" # Adjust if needed
+public_folder: "/assets/images/"
+
+collections:
+  - name: "blog"
+    label: "Blog"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "PublishDate", name: "publishDate", widget: "datetime" }
+      - { label: "Body", name: "body", widget: "markdown" }
+  - name: "brews"
+    label: "Brews"
+    folder: "src/content/brews"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Style", name: "style", widget: "string" }
+      - {
+          label: "ABV",
+          name: "abv",
+          widget: "number",
+          value_type: "float",
+          min: 0,
+          max: 20,
+          step: 0.1,
+        }
+      - {
+          label: "Status",
+          name: "status",
+          widget: "select",
+          options: ["tapped", "brewing", "upcoming"],
+        }
+      - {
+          label: "Date",
+          name: "date",
+          widget: "select",
+          options: ["TBA", ""],
+          default: "",
+          required: false,
+        }
+      - { label: "Details", name: "details", widget: "string" }
+      - {
+          label: "Tasting Notes",
+          name: "notes",
+          widget: "text",
+          required: false,
+        }

@@ -1,0 +1,43 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ThemeManager from "../components/ThemeManager.astro";
+import "../styles/global.css";
+
+export interface Props {
+  title: string;
+  description: string;
+  permalink: string;
+  current?: string;
+}
+const { title, description, permalink, current } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} permalink={permalink} />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&family=Bitter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="layout">
+      <Header current={current} />
+
+      <main class="flex-1 w-full">
+        <slot />
+      </main>
+
+      <Footer />
+    </div>
+    <ThemeManager />
+  </body>
+</html>
+
+<style>
+  .layout {
+    @apply flex flex-col min-h-screen;
+  }
+</style>
