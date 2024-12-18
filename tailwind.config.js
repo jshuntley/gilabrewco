@@ -5,13 +5,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Light Theme Colors (Sage/Tan)
+        // Light Theme Colors (Warm Desert Day)
         light: {
-          base: '#E5E6DC',      // Light sage background
-          text: '#7D7F6B',      // Darker sage text
-          accent: '#C4B19B',    // Warm tan accent
-          muted: '#B8B99E',     // Muted sage
-          soft: '#E6D5B8',      // Soft tan
+          base: '#F5F3EE',      // Warm off-white background
+          text: '#4A4B40',      // Deep sage text
+          accent: '#B8956C',    // Warm sandstone
+          muted: '#A4A69C',     // Muted sage
+          soft: '#E6DED1',      // Soft sand
+          card: '#FFFFFF',      // Pure white for cards
         },
         // Dark Theme Colors (Desert Night)
         dark: {

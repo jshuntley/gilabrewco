@@ -36,19 +36,19 @@ function getReadingTime(content: string) {
   <!-- Hero Section with Parallax -->
   <div class="relative overflow-hidden">
     <div
-      class="absolute inset-0 bg-gradient-to-b from-forest-green/20 to-forest-green/0 dark:from-desert-sand/20 dark:to-desert-sand/0"
+      class="absolute inset-0 bg-gradient-to-b from-light-text/5 to-transparent dark:from-dark-text/5 dark:to-transparent"
     >
     </div>
-    <div class="relative py-24 bg-desert-sand dark:bg-forest-green">
+    <div class="relative py-24 bg-light-soft dark:bg-dark-soft">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
           <h1
-            class="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-forest-green to-canyon-red dark:from-desert-sand dark:to-sky-blue bg-clip-text text-transparent"
+            class="inline-block text-5xl md:text-6xl font-bold mb-6 px-4 py-4 leading-tight bg-gradient-to-r from-light-text via-light-accent to-light-text dark:from-dark-text dark:via-dark-accent dark:to-dark-text bg-[length:200%_auto] bg-clip-text text-transparent"
           >
             Brewing Journal
           </h1>
           <p
-            class="text-xl text-forest-green/80 dark:text-desert-sand/80 max-w-2xl mx-auto"
+            class="text-xl text-light-text/80 dark:text-dark-text/80 max-w-2xl mx-auto"
           >
             Stories, updates, and insights from our brewing experiences
           </p>
@@ -61,7 +61,7 @@ function getReadingTime(content: string) {
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="flex flex-wrap gap-2 justify-center" id="tag-filters">
       <button
-        class="px-4 py-2 rounded-full bg-forest-green/5 dark:bg-desert-sand/5 hover:bg-canyon-red/10 dark:hover:bg-sky-blue/10 transition-colors duration-200 text-sm font-medium text-forest-green dark:text-desert-sand active"
+        class="px-4 py-2 rounded-full bg-light-soft dark:bg-dark-soft hover:bg-light-accent/10 dark:hover:bg-dark-accent/10 transition-colors duration-200 text-sm font-medium text-light-text dark:text-dark-text active"
         data-tag="all"
       >
         All Posts
@@ -69,7 +69,7 @@ function getReadingTime(content: string) {
       {
         allTags.map((tag) => (
           <button
-            class="px-4 py-2 rounded-full bg-forest-green/5 dark:bg-desert-sand/5 hover:bg-canyon-red/10 dark:hover:bg-sky-blue/10 transition-colors duration-200 text-sm font-medium text-forest-green dark:text-desert-sand"
+            class="px-4 py-2 rounded-full bg-light-soft dark:bg-dark-soft hover:bg-light-accent/10 dark:hover:bg-dark-accent/10 transition-colors duration-200 text-sm font-medium text-light-text dark:text-dark-text"
             data-tag={tag}
           >
             {tag}
@@ -88,10 +88,10 @@ function getReadingTime(content: string) {
           const readingTime = getReadingTime(post.body);
           return (
             <article
-              class="group relative bg-white dark:bg-dark-card rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              class="group relative bg-light-card dark:bg-dark-card rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               data-tags={post.data.tags?.join(" ")}
             >
-              <div class="aspect-w-16 aspect-h-9 bg-gray-200 dark:bg-dark-soft">
+              <div class="aspect-w-16 aspect-h-9 bg-light-soft dark:bg-dark-soft">
                 {post.data.image ? (
                   <Image
                     src={post.data.image}
@@ -103,7 +103,7 @@ function getReadingTime(content: string) {
                 ) : (
                   <div class="flex items-center justify-center h-full">
                     <svg
-                      class="w-12 h-12 text-gray-400"
+                      class="w-12 h-12 text-light-muted dark:text-dark-muted"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -119,7 +119,7 @@ function getReadingTime(content: string) {
                 )}
               </div>
               <div class="p-6">
-                <div class="flex items-center gap-4 text-sm text-forest-green/60 dark:text-desert-sand/60 mb-4">
+                <div class="flex items-center gap-4 text-sm text-light-text/60 dark:text-dark-text/60 mb-4">
                   <time datetime={post.data.publishDate.toISOString()}>
                     {new Date(post.data.publishDate).toLocaleDateString(
                       "en-us",
@@ -150,18 +150,18 @@ function getReadingTime(content: string) {
                 <h2 class="text-xl font-bold mb-3 line-clamp-2">
                   <a
                     href={href}
-                    class="hover:text-canyon-red dark:hover:text-sky-blue transition-colors duration-200"
+                    class="hover:text-light-accent dark:hover:text-dark-accent transition-colors duration-200"
                   >
                     {post.data.title}
                   </a>
                 </h2>
-                <p class="text-forest-green/80 dark:text-desert-sand/80 mb-4 line-clamp-3">
+                <p class="text-light-text/80 dark:text-dark-text/80 mb-4 line-clamp-3">
                   {post.data.description}
                 </p>
                 {post.data.tags && (
                   <div class="flex flex-wrap gap-2 mb-4">
                     {post.data.tags.map((tag) => (
-                      <span class="px-2 py-1 text-xs rounded-full bg-forest-green/5 dark:bg-desert-sand/5 text-forest-green/70 dark:text-desert-sand/70">
+                      <span class="px-2 py-1 text-xs rounded-full bg-light-soft dark:bg-dark-soft text-light-text/70 dark:text-dark-text/70">
                         {tag}
                       </span>
                     ))}
@@ -169,7 +169,7 @@ function getReadingTime(content: string) {
                 )}
                 <a
                   href={href}
-                  class="inline-flex items-center text-canyon-red dark:text-sky-blue hover:text-canyon-red/70 dark:hover:text-sky-blue/70 transition-colors duration-200"
+                  class="inline-flex items-center text-light-accent dark:text-dark-accent hover:text-light-muted dark:hover:text-dark-muted transition-colors duration-200"
                 >
                   Read more
                   <svg
@@ -232,6 +232,7 @@ function getReadingTime(content: string) {
   h1 {
     background-size: 200% auto;
     animation: gradient 8s ease infinite;
+    padding-bottom: 0.25em;
   }
 
   @keyframes gradient {

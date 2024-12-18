@@ -42,24 +42,52 @@ const socialUrl = new URL(
 
 <!-- This is intentionally inlined to avoid FOUC -->
 <script is:inline>
-  const root = document.documentElement;
-  const theme = (() => {
-    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
-      return localStorage.getItem("theme");
+  (function () {
+    function applyTheme(theme) {
+      const root = document.documentElement;
+      const isDark = theme === "dark";
+
+      // Apply theme class
+      root.classList.toggle("dark", isDark);
+
+      // Update toggle if it exists
+      const toggle = document.getElementById("theme-toggle");
+      if (toggle) {
+        toggle.setAttribute("aria-checked", isDark.toString());
+      }
+
+      // Store theme
+      localStorage.setItem("theme", theme);
     }
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      return "dark";
-    }
-    return "light";
+
+    // Get initial theme
+    const theme = (() => {
+      if (
+        typeof localStorage !== "undefined" &&
+        localStorage.getItem("theme")
+      ) {
+        return localStorage.getItem("theme");
+      }
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    })();
+
+    // Apply theme immediately
+    applyTheme(theme);
+
+    // Handle system theme changes
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        if (!localStorage.getItem("theme")) {
+          applyTheme(e.matches ? "dark" : "light");
+        }
+      });
+
+    // Make applyTheme available globally for view transitions
+    window.__theme = { applyTheme };
   })();
-
-  if (theme === "light") {
-    root.classList.remove("dark");
-  } else {
-    root.classList.add("dark");
-  }
-
-  window.localStorage.setItem("theme", theme);
 </script>
 
 <ClientRouter />
@@ -67,11 +95,35 @@ const socialUrl = new URL(
 <script>
   // Handle theme persistence during view transitions
   document.addEventListener("astro:after-swap", () => {
-    const theme = localStorage.getItem("theme");
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+    const theme =
+      localStorage.getItem("theme") ||
+      (window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light");
+
+    // Use the global applyTheme function
+    window.__theme?.applyTheme(theme);
+  });
+
+  // Handle theme toggle clicks
+  document.addEventListener("astro:page-load", () => {
+    const toggle = document.getElementById("theme-toggle");
+    if (toggle) {
+      toggle.addEventListener("click", () => {
+        const newTheme = document.documentElement.classList.contains("dark")
+          ? "light"
+          : "dark";
+        window.__theme?.applyTheme(newTheme);
+      });
     }
   });
+</script>
+
+<script>
+  // TypeScript type declaration for the global theme object
+  interface Window {
+    __theme?: {
+      applyTheme: (theme: string) => void;
+    };
+  }
 </script>
