@@ -34,9 +34,9 @@ const upcomingBrews = brews
 
 // Status-specific styling
 const statusStyles = {
-  tapped: "text-canyon-red",
-  brewing: "text-sky-blue",
-  upcoming: "text-forest-green/60 dark:text-desert-sand/60",
+  tapped: "text-light-accent dark:text-dark-accent font-bold",
+  brewing: "text-light-muted dark:text-dark-muted",
+  upcoming: "text-light-text/60 dark:text-dark-text/60",
 };
 ---
 
@@ -119,16 +119,14 @@ const statusStyles = {
   </div>
 
   <!-- Features Section -->
-  <div class="py-24 bg-desert-sand dark:bg-forest-green" id="about">
+  <div class="py-24 bg-light-base dark:bg-dark-base" id="about">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-20">
-        <h2
-          class="text-4xl font-bold text-forest-green dark:text-desert-sand mb-4"
-        >
+        <h2 class="text-4xl font-bold text-light-text dark:text-dark-text mb-4">
           What's Brewing
         </h2>
         <p
-          class="text-xl text-forest-green/80 dark:text-desert-sand/80 max-w-3xl mx-auto"
+          class="text-xl text-light-text/80 dark:text-dark-text/80 max-w-3xl mx-auto"
         >
           From tank to tap, here's what's happening in our brewhouse
         </p>
@@ -137,10 +135,10 @@ const statusStyles = {
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
         <!-- Recently Tapped -->
         <div
-          class="group p-8 bg-white/10 dark:bg-white/5 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl backdrop-blur-sm"
+          class="group p-8 bg-light-soft/10 dark:bg-dark-soft/5 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl backdrop-blur-sm"
         >
           <div
-            class="mb-6 text-forest-green dark:text-desert-sand group-hover:text-canyon-red transition-colors duration-300"
+            class="mb-6 text-light-text dark:text-dark-text group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors duration-300"
           >
             <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
               <path
@@ -149,39 +147,54 @@ const statusStyles = {
             </svg>
           </div>
           <h3
-            class="text-2xl font-bold text-forest-green dark:text-desert-sand mb-4"
+            class="text-2xl font-bold text-light-text dark:text-dark-text mb-4"
           >
             Recently Tapped
           </h3>
           <div class="space-y-4">
             {
-              tappedBrews.map((brew) => (
-                <div class="border-b border-forest-green/10 dark:border-desert-sand/10 pb-4">
-                  <h4 class="font-bold mb-1">{brew.name}</h4>
-                  <div class="text-sm text-forest-green/60 dark:text-desert-sand/60 mb-2">
-                    {brew.style} • {brew.abv}% ABV
-                  </div>
-                  <p class="text-forest-green/90 dark:text-desert-sand/90">
-                    {brew.description}
-                  </p>
-                  {brew.notes && (
-                    <p class="text-sm text-forest-green/80 dark:text-desert-sand/80 mt-2">
-                      {brew.notes}
+              tappedBrews.length > 0 ? (
+                tappedBrews.map((brew) => (
+                  <div class="border-b border-light-text/10 dark:border-dark-text/10 pb-4">
+                    <h4 class="font-bold mb-1 text-light-accent dark:text-dark-accent">
+                      {brew.name}
+                    </h4>
+                    <div class="text-sm text-light-text/60 dark:text-dark-text/60 mb-2">
+                      {brew.style} • {brew.abv}% ABV
+                    </div>
+                    <p class="text-light-text/90 dark:text-dark-text/90">
+                      {brew.description}
                     </p>
-                  )}
-                  <span class={statusStyles[brew.status]}>{brew.details}</span>
+                    {brew.notes && (
+                      <p class="text-sm text-light-text/80 dark:text-dark-text/80 mt-2">
+                        {brew.notes}
+                      </p>
+                    )}
+                    <span class={statusStyles[brew.status]}>
+                      {brew.details}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <div class="text-center py-8">
+                  <p class="text-light-text/60 dark:text-dark-text/60">
+                    No beers currently on tap
+                  </p>
+                  <p class="text-sm text-light-text/40 dark:text-dark-text/40 mt-2">
+                    Check back soon for new releases
+                  </p>
                 </div>
-              ))
+              )
             }
           </div>
         </div>
 
         <!-- Currently Brewing -->
         <div
-          class="group p-8 bg-white/10 dark:bg-white/5 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl backdrop-blur-sm"
+          class="group p-8 bg-light-soft/10 dark:bg-dark-soft/5 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl backdrop-blur-sm"
         >
           <div
-            class="mb-6 text-forest-green dark:text-desert-sand group-hover:text-canyon-red transition-colors duration-300"
+            class="mb-6 text-light-text dark:text-dark-text group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors duration-300"
           >
             <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
               <path
@@ -191,39 +204,54 @@ const statusStyles = {
             </svg>
           </div>
           <h3
-            class="text-2xl font-bold text-forest-green dark:text-desert-sand mb-4"
+            class="text-2xl font-bold text-light-text dark:text-dark-text mb-4"
           >
             In The Tank
           </h3>
           <div class="space-y-4">
             {
-              brewingBrews.map((brew) => (
-                <div class="border-b border-forest-green/10 dark:border-desert-sand/10 pb-4">
-                  <h4 class="font-bold mb-1">{brew.name}</h4>
-                  <div class="text-sm text-forest-green/60 dark:text-desert-sand/60 mb-2">
-                    {brew.style} • {brew.abv}% ABV
-                  </div>
-                  <p class="text-forest-green/90 dark:text-desert-sand/90">
-                    {brew.description}
-                  </p>
-                  {brew.notes && (
-                    <p class="text-sm text-forest-green/80 dark:text-desert-sand/80 mt-2">
-                      {brew.notes}
+              brewingBrews.length > 0 ? (
+                brewingBrews.map((brew) => (
+                  <div class="border-b border-light-text/10 dark:border-dark-text/10 pb-4">
+                    <h4 class="font-bold mb-1 text-light-accent dark:text-dark-accent">
+                      {brew.name}
+                    </h4>
+                    <div class="text-sm text-light-text/60 dark:text-dark-text/60 mb-2">
+                      {brew.style} • {brew.abv}% ABV
+                    </div>
+                    <p class="text-light-text/90 dark:text-dark-text/90">
+                      {brew.description}
                     </p>
-                  )}
-                  <span class={statusStyles[brew.status]}>{brew.details}</span>
+                    {brew.notes && (
+                      <p class="text-sm text-light-text/80 dark:text-dark-text/80 mt-2">
+                        {brew.notes}
+                      </p>
+                    )}
+                    <span class={statusStyles[brew.status]}>
+                      {brew.details}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <div class="text-center py-8">
+                  <p class="text-light-text/60 dark:text-dark-text/60">
+                    Nothing brewing at the moment
+                  </p>
+                  <p class="text-sm text-light-text/40 dark:text-dark-text/40 mt-2">
+                    New batch coming soon
+                  </p>
                 </div>
-              ))
+              )
             }
           </div>
         </div>
 
         <!-- Coming Soon -->
         <div
-          class="group p-8 bg-white/10 dark:bg-white/5 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl backdrop-blur-sm"
+          class="group p-8 bg-light-soft/10 dark:bg-dark-soft/5 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl backdrop-blur-sm"
         >
           <div
-            class="mb-6 text-forest-green dark:text-desert-sand group-hover:text-canyon-red transition-colors duration-300"
+            class="mb-6 text-light-text dark:text-dark-text group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors duration-300"
           >
             <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
               <path
@@ -232,29 +260,44 @@ const statusStyles = {
             </svg>
           </div>
           <h3
-            class="text-2xl font-bold text-forest-green dark:text-desert-sand mb-4"
+            class="text-2xl font-bold text-light-text dark:text-dark-text mb-4"
           >
             Up Next
           </h3>
           <div class="space-y-4">
             {
-              upcomingBrews.map((brew) => (
-                <div class="border-b border-forest-green/10 dark:border-desert-sand/10 pb-4">
-                  <h4 class="font-bold mb-1">{brew.name}</h4>
-                  <div class="text-sm text-forest-green/60 dark:text-desert-sand/60 mb-2">
-                    {brew.style} • {brew.abv}% ABV
-                  </div>
-                  <p class="text-forest-green/90 dark:text-desert-sand/90">
-                    {brew.description}
-                  </p>
-                  {brew.notes && (
-                    <p class="text-sm text-forest-green/80 dark:text-desert-sand/80 mt-2">
-                      {brew.notes}
+              upcomingBrews.length > 0 ? (
+                upcomingBrews.map((brew) => (
+                  <div class="border-b border-light-text/10 dark:border-dark-text/10 pb-4">
+                    <h4 class="font-bold mb-1 text-light-accent dark:text-dark-accent">
+                      {brew.name}
+                    </h4>
+                    <div class="text-sm text-light-text/60 dark:text-dark-text/60 mb-2">
+                      {brew.style} • {brew.abv}% ABV
+                    </div>
+                    <p class="text-light-text/90 dark:text-dark-text/90">
+                      {brew.description}
                     </p>
-                  )}
-                  <span class={statusStyles[brew.status]}>{brew.details}</span>
+                    {brew.notes && (
+                      <p class="text-sm text-light-text/80 dark:text-dark-text/80 mt-2">
+                        {brew.notes}
+                      </p>
+                    )}
+                    <span class={statusStyles[brew.status]}>
+                      {brew.details}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <div class="text-center py-8">
+                  <p class="text-light-text/60 dark:text-dark-text/60">
+                    No upcoming brews planned
+                  </p>
+                  <p class="text-sm text-light-text/40 dark:text-dark-text/40 mt-2">
+                    Planning our next creation
+                  </p>
                 </div>
-              ))
+              )
             }
           </div>
         </div>

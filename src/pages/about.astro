@@ -13,78 +13,90 @@ const permalink = new URL(Astro.url.pathname, Astro.site).href;
   current="about"
 >
   <!-- Hero Section -->
-  <div class="relative py-24 bg-desert-sand dark:bg-forest-green">
+  <div class="relative py-16 md:py-24 bg-light-base dark:bg-dark-base">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center">
-        <h1 class="text-4xl md:text-5xl font-bold mb-6">Our Story</h1>
-        <p
-          class="text-xl text-forest-green/80 dark:text-desert-sand/80 max-w-2xl mx-auto"
-        >
-          Authentic craft brews inspired by our adventures
+      <div class="text-center max-w-3xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-bold mb-8">Our Story</h1>
+        <p class="text-lg md:text-xl text-light-text/80 dark:text-dark-text/80">
+          Our brewing journey began with a simple Northern Brewer beginner
+          kit—just plastic buckets, extracts, and a five-gallon brew kettle.
+          Like many passionate brewers, what started as a hobby quickly became
+          an obsession. Though our enthusiasm grew, our limited space and aging
+          equipment held us back. Now, years later, we've expanded our workspace
+          and invested in a three-vessel, all-grain setup from SS Brewtech.
+          Let's see what we can do with it!
         </p>
       </div>
     </div>
   </div>
 
   <!-- Content Sections -->
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <div class="space-y-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="space-y-24">
       <!-- Mission Section -->
-      <section class="grid md:grid-cols-2 gap-8 items-center">
-        <div>
-          <h2 class="text-3xl font-bold mb-4">Our Mission</h2>
-          <p class="text-lg text-forest-green/80 dark:text-desert-sand/80">
-            We believe in crafting beers that tell the story of our life. Every
-            brew is inspired by our experiences. Whether it's where we've been,
-            want to go, or another beer we've had.
+      <section class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="order-2 md:order-1">
+          <h2 class="text-3xl font-bold mb-6">Our Mission</h2>
+          <p
+            class="text-lg text-light-text/80 dark:text-dark-text/80 leading-relaxed"
+          >
+            As a home brewery, our mission is rooted in the spirit of learning,
+            exploration, and enjoyment. We are passionate beginners dedicated to
+            mastering the craft of brewing, one batch at a time. Our website
+            serves as a platform to share our journey, insights, and growing
+            knowledge with fellow enthusiasts and curious novices.
+          </p>
+          <p
+            class="text-lg text-light-text/80 dark:text-dark-text/80 leading-relaxed mt-4"
+          >
+            We aim to create a welcoming community where we can exchange tips,
+            experiences, and the love of home brewed beer. Join us as we explore
+            the art of brewing from the comfort of our home, and discover the
+            joy and satisfaction of crafting something truly unique.
           </p>
         </div>
-        <img
-          src="/assets/images/cheers.jpg"
-          alt="Craft beer brewing process"
-          class="rounded-xl shadow-lg"
-        />
+        <div class="order-1 md:order-2">
+          <img
+            src="/assets/images/cheers.jpg"
+            alt="Craft beer brewing process"
+            class="rounded-xl shadow-lg w-full h-[400px] object-cover"
+            loading="lazy"
+          />
+        </div>
       </section>
 
       <!-- Process Section -->
-      <section
-        class="grid md:grid-cols-2 gap-8 items-center md:grid-flow-dense"
-      >
-        <div class="md:col-start-2">
-          <h2 class="text-3xl font-bold mb-4">The Process</h2>
-          <p class="text-lg text-forest-green/80 dark:text-desert-sand/80">
-            Our small-batch brewing process combines traditional techniques with
-            modern innovation. We take pride in every step, from grain selection
-            to the final pour, ensuring each beer reflects our commitment to
-            quality and sustainability.
+      <section class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="order-2">
+          <h2 class="text-3xl font-bold mb-6">The Process</h2>
+          <p
+            class="text-lg text-light-text/80 dark:text-dark-text/80 leading-relaxed"
+          >
+            Our brewing process is a journey, an adventure that combines the
+            time-honored traditions of all-grain brewing with the precision of
+            modern technology. We're set up with a three-vessel, 10-gallon SS
+            Brewtech e-brewing system, giving us the ability to control every
+            detail and ensure consistency in our brews.
+          </p>
+          <p
+            class="text-lg text-light-text/80 dark:text-dark-text/80 leading-relaxed mt-4"
+          >
+            Right now, we're deeply focused on learning different beer styles
+            and digging into the basics. Mistakes? Totally part of the process!
+            We welcome them as they teach us and push us to become better. By
+            being open to experimentation and the occasional slip-up, we're not
+            just brewing beer—we're crafting an art form.
           </p>
         </div>
-        <img
-          src="/assets/images/homebrew.jpg"
-          alt="Our brewery equipment"
-          class="rounded-xl shadow-lg md:col-start-1"
-        />
+        <div class="order-1">
+          <img
+            src="/assets/images/homebrew.jpg"
+            alt="Our brewery equipment"
+            class="rounded-xl shadow-lg w-full h-[400px] object-cover"
+            loading="lazy"
+          />
+        </div>
       </section>
-
-      <!-- Team Section -->
-      <!-- <section class="text-center">
-        <h2 class="text-3xl font-bold mb-8">Meet the Team</h2>
-        <div class="grid md:grid-cols-3 gap-8">
-          {/* Add team member cards here */}
-          <div class="space-y-4">
-            <img
-              src="/assets/team/brewer1.webp"
-              alt="Head Brewer"
-              class="w-48 h-48 rounded-full mx-auto object-cover"
-            />
-            <div>
-              <h3 class="text-xl font-bold">John Smith</h3>
-              <p class="text-forest-green/80 dark:text-desert-sand/80">
-                Head Brewer
-              </p>
-            </div>
-          </div> -->
-      {/* Add more team members */}
     </div>
   </div>
 </BaseLayout>

@@ -5,10 +5,22 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'forest-green': '#2C4A3E',
-        'desert-sand': '#E6D5B8',
-        'canyon-red': '#C44536',
-        'sky-blue': '#4A90E2',
+        // Light Theme Colors (Sage/Tan)
+        light: {
+          base: '#E5E6DC',      // Light sage background
+          text: '#7D7F6B',      // Darker sage text
+          accent: '#C4B19B',    // Warm tan accent
+          muted: '#B8B99E',     // Muted sage
+          soft: '#E6D5B8',      // Soft tan
+        },
+        // Dark Theme Colors (Desert Night)
+        dark: {
+          base: '#1F1D2B',      // Deep desert night sky
+          text: '#E4D6A7',      // Desert sand by starlight
+          accent: '#E9B872',    // Warm sandstone glow
+          muted: '#9B8E7E',     // Desert rock shadows
+          soft: '#2A2838',      // Twilight purple-blue
+        }
       },
       fontFamily: {
         sans: ['Source Sans Pro', 'system-ui', 'sans-serif'],
@@ -18,52 +30,34 @@ module.exports = {
         DEFAULT: {
           css: {
             maxWidth: 'none',
-            color: theme('colors.forest-green'),
+            color: theme('colors.light.text'),
             a: {
-              color: theme('colors.canyon-red'),
+              color: theme('colors.light.accent'),
               '&:hover': {
-                color: theme('colors.sky-blue'),
+                color: theme('colors.light.muted'),
               },
             },
-            h1: {
-              color: theme('colors.forest-green'),
-            },
-            h2: {
-              color: theme('colors.forest-green'),
-            },
-            h3: {
-              color: theme('colors.forest-green'),
-            },
-            h4: {
-              color: theme('colors.forest-green'),
+            'h1,h2,h3,h4': {
+              color: theme('colors.light.text'),
             },
           },
         },
         dark: {
           css: {
-            color: theme('colors.desert-sand'),
+            color: theme('colors.dark.text'),
             a: {
-              color: theme('colors.canyon-red'),
+              color: theme('colors.dark.accent'),
               '&:hover': {
-                color: theme('colors.sky-blue'),
+                color: theme('colors.dark.muted'),
               },
             },
-            h1: {
-              color: theme('colors.desert-sand'),
-            },
-            h2: {
-              color: theme('colors.desert-sand'),
-            },
-            h3: {
-              color: theme('colors.desert-sand'),
-            },
-            h4: {
-              color: theme('colors.desert-sand'),
+            'h1,h2,h3,h4': {
+              color: theme('colors.dark.text'),
             },
           },
         },
-      }),
+      })
     },
   },
   plugins: [require('@tailwindcss/typography')],
-}
+};
