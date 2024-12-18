@@ -1,310 +1,90 @@
 ---
 import { Image } from "astro:assets";
+import ThemeToggle from "./ThemeToggle.astro";
+
+interface Props {
+  current?: string;
+}
+
 const { current = "" } = Astro.props;
 
-interface ThemeToggleState {
-  isDark: boolean;
-  html: HTMLElement;
-  toggle: HTMLElement | null;
-}
+const links = [
+  { text: "Home", href: "/", id: "" },
+  { text: "About", href: "/about", id: "about" },
+  { text: "Blog", href: "/blog", id: "blog" },
+] as const;
 ---
 
 <header
-  class="sticky top-0 z-50 w-full bg-light-base/95 dark:bg-dark-base/95 border-b border-light-text/10 dark:border-dark-text/10 animate-fadeIn"
+  class="sticky top-0 z-50 w-full bg-light-base/80 dark:bg-dark-base/80 backdrop-blur-md border-b border-light-accent/10 dark:border-dark-accent/10"
 >
-  <div class="max-w-7xl mx-auto px-4">
-    <nav class="h-16 flex items-center justify-between" role="navigation">
-      <!-- Logo - Fixed width to maintain consistent spacing -->
-      <div class="w-56">
-        <a href="/" class="flex items-center gap-4 group">
-          <Image
-            src="/assets/images/logo.png"
-            alt="Gila Brewing Co. Logo"
-            width={48}
-            height={48}
-            class="rounded-full shadow-md transition-transform duration-300 group-hover:scale-105"
-          />
-          <span
-            class="hidden sm:inline-block font-bold text-xl text-light-text dark:text-dark-text whitespace-nowrap transition-colors duration-300"
-          >
-            Gila Brewing Co.
-          </span>
-        </a>
-      </div>
-
-      <!-- Desktop Navigation - Centered -->
-      <div class="hidden md:flex items-center justify-center gap-8">
-        <a
-          href="/"
-          class={`relative px-4 py-2 rounded-lg text-light-text dark:text-dark-text transition-all duration-300 hover:bg-light-text/10 dark:hover:bg-dark-text/10 hover:scale-105
-            ${current === "" ? "font-bold bg-light-text/5 dark:bg-dark-text/5" : ""}`}
-        >
-          Home
-        </a>
-        <a
-          href="/about"
-          class={`relative px-4 py-2 rounded-lg text-light-text dark:text-dark-text transition-all duration-300 hover:bg-light-text/10 dark:hover:bg-dark-text/10 hover:scale-105
-            ${current === "about" ? "font-bold bg-light-text/5 dark:bg-dark-text/5" : ""}`}
-        >
-          About
-        </a>
-        <a
-          href="/blog"
-          class={`relative px-4 py-2 rounded-lg text-light-text dark:text-dark-text transition-all duration-300 hover:bg-light-text/10 dark:hover:bg-dark-text/10 hover:scale-105
-            ${current === "blog" ? "font-bold bg-light-text/5 dark:bg-dark-text/5" : ""}`}
-        >
-          Blog
-        </a>
-      </div>
-
-      <!-- Theme Toggle and Mobile Menu Button -->
-      <div class="w-56 flex items-center justify-end gap-4">
-        <!-- Instagram -->
-        <a
-          href="https://instagram.com/gila.brews"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-light-text/80 dark:text-dark-text/80 hover:text-light-accent dark:hover:text-dark-accent transition-all duration-300 hover:scale-110 hover:-rotate-12"
-          aria-label="Follow us on Instagram"
-        >
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
-            ></path>
-          </svg>
-        </a>
-
-        <!-- Theme Toggle Switch -->
-        <button
-          id="theme-toggle"
-          class="relative w-14 h-7 rounded-full bg-light-soft dark:bg-dark-soft/50 transition-all duration-300 border-2 border-light-accent/20 dark:border-dark-accent/20 hover:border-light-accent dark:hover:border-dark-accent"
-          aria-label="Toggle theme"
-          role="switch"
-          aria-checked="false"
-        >
-          <span class="sr-only">Toggle dark mode</span>
-          <!-- Track Icons Container -->
-          <div
-            class="absolute inset-0 flex justify-between items-center px-[2px]"
-          >
-            <!-- Sun icon -->
-            <svg
-              class="w-5 h-5 text-light-text/60 transition-all duration-300 dark:opacity-40"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                clip-rule="evenodd"></path>
-            </svg>
-            <!-- Moon icon -->
-            <svg
-              class="w-5 h-5 text-light-text/60 dark:text-dark-text/60 transition-all duration-300 opacity-60 dark:opacity-100"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
-              ></path>
-            </svg>
-          </div>
-          <!-- Toggle Circle -->
-          <span
-            class="absolute block w-6 h-6 rounded-full bg-white shadow-md transition-all duration-300 translate-y-[-50%] dark:translate-x-7 dark:bg-dark-accent"
-            style="top: 50%;"></span>
-        </button>
-
-        <!-- Mobile Menu Button -->
-        <button
-          id="mobile-menu-button"
-          class="md:hidden text-light-text/80 dark:text-dark-text/80 hover:text-light-accent dark:hover:text-dark-accent transition-all duration-300 hover:scale-110"
-          aria-label="Toggle menu"
-        >
-          <svg
-            class="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
-      </div>
-    </nav>
-  </div>
-
-  <!-- Mobile Menu -->
-  <div
-    id="mobile-menu"
-    class="hidden md:hidden fixed inset-x-0 top-[73px] bg-light-base/95 dark:bg-dark-base/95 border-t border-light-text/10 dark:border-dark-text/10 shadow-lg transition-all duration-300"
-    style="max-height: calc(100vh - 73px); overflow-y: auto;"
-    role="navigation"
-  >
-    <div class="px-4 py-4 space-y-2">
+  <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
+    <div class="flex lg:flex-1">
       <a
         href="/"
-        class={`block px-4 py-3 rounded-lg text-light-text dark:text-dark-text hover:bg-light-text/10 dark:hover:bg-dark-text/10 transition-all duration-300 
-          ${current === "" ? "font-bold bg-light-text/5 dark:bg-dark-text/5" : ""}
-          hover:translate-x-2`}
+        class="-m-1.5 p-1.5 flex items-center gap-4"
+        aria-label="Gila Brewing Co. home"
       >
-        Home
-      </a>
-      <a
-        href="/about"
-        class={`block px-4 py-3 rounded-lg text-light-text dark:text-dark-text hover:bg-light-text/10 dark:hover:bg-dark-text/10 transition-all duration-300 
-          ${current === "about" ? "font-bold bg-light-text/5 dark:bg-dark-text/5" : ""}
-          hover:translate-x-2`}
-      >
-        About
-      </a>
-      <a
-        href="/blog"
-        class={`block px-4 py-3 rounded-lg text-light-text dark:text-dark-text hover:bg-light-text/10 dark:hover:bg-dark-text/10 transition-all duration-300 
-          ${current === "blog" ? "font-bold bg-light-text/5 dark:bg-dark-text/5" : ""}
-          hover:translate-x-2`}
-      >
-        Blog
+        <Image
+          src="/assets/images/logo.png"
+          alt="Gila Brewing Co."
+          width={48}
+          height={48}
+          class="rounded-full shadow-md"
+        />
+        <span
+          class="hidden sm:inline-block font-serif font-bold text-2xl text-light-text dark:text-dark-text whitespace-nowrap tracking-tight"
+        >
+          Gila Brewing Co.
+        </span>
       </a>
     </div>
-  </div>
+
+    <!-- Navigation Links -->
+    <div class="hidden sm:flex sm:gap-x-8">
+      {
+        links.map(({ text, href, id }) => {
+          const isCurrentPage = current === id;
+          return (
+            <a
+              href={href}
+              class:list={[
+                "font-sans text-base font-medium tracking-wide transition-colors duration-200",
+                isCurrentPage
+                  ? "text-light-accent dark:text-dark-accent"
+                  : "text-light-text dark:text-dark-text hover:text-light-accent dark:hover:text-dark-accent",
+              ]}
+              aria-current={isCurrentPage ? "page" : undefined}
+            >
+              {text}
+            </a>
+          );
+        })
+      }
+    </div>
+
+    <div class="flex flex-1 justify-end">
+      <ThemeToggle />
+    </div>
+  </nav>
 </header>
 
-<style>
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .animate-fadeIn {
-    animation: fadeIn 0.5s ease-out forwards;
-  }
-
-  :root {
-    --light-text: rgb(51, 51, 51);
-    --dark-text: rgb(255, 255, 255);
-    --light-accent: rgb(59, 130, 246);
-    --dark-accent: rgb(96, 165, 250);
-    --light-accent-rgb: 59, 130, 246;
-    --dark-accent-rgb: 96, 165, 250;
-  }
-
-  .dark {
-    --light-text: rgb(255, 255, 255);
-    --dark-text: rgb(255, 255, 255);
-    --light-accent: rgb(96, 165, 250);
-    --dark-accent: rgb(96, 165, 250);
-    --light-accent-rgb: 96, 165, 250;
-    --dark-accent-rgb: 96, 165, 250;
-  }
-
-  #theme-toggle {
-    -webkit-tap-highlight-color: transparent;
-    box-shadow: 0 0 10px rgba(var(--light-accent-rgb), 0.1);
-  }
-
-  #theme-toggle:focus-visible {
-    outline: 2px solid var(--light-accent);
-    outline-offset: 2px;
-  }
-
-  #theme-toggle:hover {
-    box-shadow: 0 0 15px rgba(var(--light-accent-rgb), 0.2);
-  }
-
-  .dark #theme-toggle {
-    box-shadow: 0 0 10px rgba(var(--dark-accent-rgb), 0.1);
-  }
-
-  .dark #theme-toggle:hover {
-    box-shadow: 0 0 15px rgba(var(--dark-accent-rgb), 0.2);
-  }
-
-  #theme-toggle svg {
-    pointer-events: none;
-  }
-</style>
-
 <script>
-  // Mobile menu functionality - using a self-executing function
-  (function () {
-    let isInitialized = false;
+  // Update current page indicator during transitions
+  document.addEventListener("astro:page-load", () => {
+    const path = window.location.pathname;
+    const links = document.querySelectorAll("header nav a");
 
-    function initializeMobileMenu() {
-      if (isInitialized) return;
-      isInitialized = true;
+    links.forEach((link) => {
+      const isCurrentPage =
+        link.getAttribute("href") === path ||
+        (path === "/" && link.getAttribute("href") === "/");
 
-      const mobileMenuButton = document.getElementById("mobile-menu-button");
-      const mobileMenu = document.getElementById("mobile-menu");
-      const body = document.body;
-      let isMenuOpen = false;
-
-      function toggleMenu() {
-        isMenuOpen = !isMenuOpen;
-        if (mobileMenu) {
-          mobileMenu.classList.toggle("hidden");
-          mobileMenu.style.transform = isMenuOpen
-            ? "translateY(0)"
-            : "translateY(-100%)";
-          mobileMenu.style.opacity = isMenuOpen ? "1" : "0";
-        }
-        body.style.overflow = isMenuOpen ? "hidden" : "";
-
-        if (mobileMenuButton) {
-          mobileMenuButton.setAttribute("aria-expanded", isMenuOpen.toString());
-          mobileMenuButton.setAttribute(
-            "aria-label",
-            isMenuOpen ? "Close menu" : "Open menu"
-          );
-        }
-      }
-
-      mobileMenuButton?.addEventListener("click", (e) => {
-        e.stopPropagation();
-        toggleMenu();
-      });
-
-      document.addEventListener("click", (e) => {
-        if (
-          isMenuOpen &&
-          !mobileMenu?.contains(e.target as Node) &&
-          !mobileMenuButton?.contains(e.target as Node)
-        ) {
-          toggleMenu();
-        }
-      });
-
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && isMenuOpen) {
-          toggleMenu();
-        }
-      });
-
-      window.addEventListener("resize", () => {
-        if (isMenuOpen && window.innerWidth >= 768) {
-          toggleMenu();
-        }
-      });
-    }
-
-    // Initialize on page load
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", initializeMobileMenu);
-    } else {
-      initializeMobileMenu();
-    }
-
-    // Handle view transitions
-    document.addEventListener("astro:after-swap", initializeMobileMenu);
-  })();
+      link.classList.toggle("text-light-accent", isCurrentPage);
+      link.classList.toggle("dark:text-dark-accent", isCurrentPage);
+      link.classList.toggle("text-light-text", !isCurrentPage);
+      link.classList.toggle("dark:text-dark-text", !isCurrentPage);
+      link.setAttribute("aria-current", isCurrentPage ? "page" : "false");
+    });
+  });
 </script>

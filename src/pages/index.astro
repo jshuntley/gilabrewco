@@ -176,9 +176,17 @@ const statusStyles: Record<Brew['status'], string> = {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-20">
         <h2 
-          class="text-4xl font-bold mb-4 bg-gradient-to-r from-light-text via-light-accent to-light-text 
-          dark:from-dark-text dark:via-dark-accent dark:to-dark-text bg-clip-text text-transparent 
-          bg-[length:200%] animate-gradient"
+          style="
+            background: linear-gradient(to right, var(--from-color), var(--via-color), var(--from-color));
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientMove 3s linear infinite;
+            line-height: 1.4;
+            padding-bottom: 0.2em;
+          "
+          class="text-4xl font-bold mb-4"
         >
           What's Brewing
         </h2>

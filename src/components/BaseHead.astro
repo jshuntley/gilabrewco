@@ -1,5 +1,4 @@
 ---
-import { ClientRouter } from "astro:transitions";
 import "../styles/fonts.css";
 import "../styles/global.css";
 
@@ -14,6 +13,15 @@ const socialUrl = new URL(
   "assets/social.png",
   Astro.site?.href ?? "https://gilabrewing.com/"
 ).href;
+
+// Declare global window interface
+declare global {
+  interface Window {
+    themeToggle: {
+      toggle: () => boolean;
+    };
+  }
+}
 ---
 
 <!-- Global Metadata -->
@@ -40,38 +48,20 @@ const socialUrl = new URL(
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={socialUrl} />
 
-<!-- This is intentionally inlined to avoid FOUC -->
-<script is:inline>
+<!-- Theme handling script -->
+<script is:inline define:vars={{ isDark: false }}>
   (function () {
     function applyTheme(theme) {
-      const root = document.documentElement;
-      const isDark = theme === "dark";
-
-      // Apply theme class
-      root.classList.toggle("dark", isDark);
-
-      // Update toggle if it exists
-      const toggle = document.getElementById("theme-toggle");
-      if (toggle) {
-        toggle.setAttribute("aria-checked", isDark.toString());
-      }
-
-      // Store theme
+      document.documentElement.classList.toggle("dark", theme === "dark");
       localStorage.setItem("theme", theme);
     }
 
     // Get initial theme
-    const theme = (() => {
-      if (
-        typeof localStorage !== "undefined" &&
-        localStorage.getItem("theme")
-      ) {
-        return localStorage.getItem("theme");
-      }
-      return window.matchMedia("(prefers-color-scheme: dark)").matches
+    const theme =
+      localStorage.getItem("theme") ||
+      (window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
-        : "light";
-    })();
+        : "light");
 
     // Apply theme immediately
     applyTheme(theme);
@@ -85,45 +75,44 @@ const socialUrl = new URL(
         }
       });
 
-    // Make applyTheme available globally for view transitions
-    window.__theme = { applyTheme };
+    // Make theme functions available globally
+    window.themeToggle = {
+      toggle: () => {
+        const isDark = document.documentElement.classList.contains("dark");
+        applyTheme(isDark ? "light" : "dark");
+        return !isDark;
+      },
+    };
   })();
 </script>
 
-<ClientRouter />
-
 <script>
-  // Handle theme persistence during view transitions
-  document.addEventListener("astro:after-swap", () => {
-    const theme =
-      localStorage.getItem("theme") ||
-      (window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light");
-
-    // Use the global applyTheme function
-    window.__theme?.applyTheme(theme);
-  });
-
   // Handle theme toggle clicks
-  document.addEventListener("astro:page-load", () => {
-    const toggle = document.getElementById("theme-toggle");
-    if (toggle) {
-      toggle.addEventListener("click", () => {
-        const newTheme = document.documentElement.classList.contains("dark")
-          ? "light"
-          : "dark";
-        window.__theme?.applyTheme(newTheme);
-      });
-    }
-  });
-</script>
+  document.addEventListener(
+    "astro:page-load",
+    () => {
+      const toggle = document.getElementById("theme-toggle");
+      if (toggle) {
+        toggle.addEventListener("click", () => {
+          const isDark = window.themeToggle?.toggle();
+          toggle.setAttribute("aria-checked", isDark.toString());
+        });
+      }
+    },
+    { once: false }
+  );
 
-<script>
-  // TypeScript type declaration for the global theme object
-  interface Window {
-    __theme?: {
-      applyTheme: (theme: string) => void;
-    };
-  }
+  // Handle theme persistence during transitions
+  document.addEventListener(
+    "astro:after-swap",
+    () => {
+      const theme =
+        localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light");
+      document.documentElement.classList.toggle("dark", theme === "dark");
+    },
+    { once: false }
+  );
 </script>

@@ -43,7 +43,15 @@ function getReadingTime(content: string) {
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
           <h1
-            class="inline-block text-5xl md:text-6xl font-bold mb-6 px-4 py-4 leading-tight bg-gradient-to-r from-light-text via-light-accent to-light-text dark:from-dark-text dark:via-dark-accent dark:to-dark-text bg-[length:200%_auto] bg-clip-text text-transparent"
+            style="
+              background: linear-gradient(to right, var(--from-color), var(--via-color), var(--from-color));
+              background-size: 200% 100%;
+              -webkit-background-clip: text;
+              background-clip: text;
+              color: transparent;
+              animation: gradientMove 3s linear infinite;
+            "
+            class="text-5xl md:text-6xl font-serif font-bold mb-6 px-4 py-4 leading-tight"
           >
             Brewing Journal
           </h1>
@@ -228,22 +236,23 @@ function getReadingTime(content: string) {
     transition: all 0.3s ease-in-out;
   }
 
-  /* Gradient text animation */
-  h1 {
-    background-size: 200% auto;
-    animation: gradient 8s ease infinite;
-    padding-bottom: 0.25em;
+  /* Gradient animation */
+  :root {
+    --from-color: #4a4b40;
+    --via-color: #b8956c;
   }
 
-  @keyframes gradient {
+  :root[class="dark"] {
+    --from-color: #e4d6a7;
+    --via-color: #e9b872;
+  }
+
+  @keyframes gradientMove {
     0% {
       background-position: 0% 50%;
     }
-    50% {
-      background-position: 100% 50%;
-    }
     100% {
-      background-position: 0% 50%;
+      background-position: -200% 50%;
     }
   }
 

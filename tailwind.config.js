@@ -28,6 +28,21 @@ module.exports = {
         sans: ['Source Sans Pro', 'system-ui', 'sans-serif'],
         serif: ['Bitter', 'Georgia', 'serif'],
       },
+      animation: {
+        gradient: 'gradient 3s linear infinite',
+      },
+      keyframes: {
+        gradient: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '100%': { backgroundPosition: '-200% 50%' },
+        },
+      },
+      backgroundSize: {
+        'auto': 'auto',
+        'cover': 'cover',
+        'contain': 'contain',
+        '200%': '200%',
+      },
       typography: theme => ({
         DEFAULT: {
           css: {

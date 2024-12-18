@@ -9,7 +9,15 @@ const today = new Date();
     <!-- Contact Section -->
     <div class="text-center mb-8">
       <h2
-        class="text-2xl font-bold bg-gradient-to-r from-light-text via-light-accent to-light-text dark:from-dark-text dark:via-dark-accent dark:to-dark-text bg-clip-text text-transparent bg-[length:200%] animate-gradient"
+        style="
+          background: linear-gradient(to right, var(--from-color), var(--via-color), var(--from-color));
+          background-size: 200% 100%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          animation: gradientMove 3s linear infinite;
+        "
+        class="text-3xl font-bold mb-8 text-center"
       >
         Get in Touch
       </h2>

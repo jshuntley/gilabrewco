@@ -5,6 +5,18 @@
 :root {
   --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --card-shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --from-color: #4A4B40;
+  --via-color: #B8956C;
+}
+
+:root[class="dark"] {
+  --from-color: #E4D6A7;
+  --via-color: #E9B872;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  100% { background-position: -200% 50%; }
 }
 
 @layer base {
@@ -110,4 +122,9 @@
 
 .animate-scale-in {
   animation: scaleIn 0.4s ease-out forwards;
+}
+
+.animate-gradient {
+  animation: gradient 3s linear infinite;
+  background-size: 200% auto;
 }
