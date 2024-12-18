@@ -3,7 +3,7 @@ export interface Brew {
   description: string;
   style: string;
   abv: number;
-  status: 'tapped' | 'brewing' | 'upcoming';
+  status: "tapped" | "brewing" | "upcoming";
   date: string;
   details: string;
   notes?: string;

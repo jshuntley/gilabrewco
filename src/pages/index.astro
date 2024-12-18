@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import type { Brew } from "../types/brew";
+import { getCollection } from "astro:content";
 
 const title = "Gila Brewing Co.";
 const description =
@@ -10,17 +11,9 @@ const permalink = new URL(
   Astro.site?.href ?? "https://gilabrewing.com"
 ).href;
 
-// Get all brews
-const brewFiles = await Promise.all(
-  Object.values(
-    await import.meta.glob<{ data: Brew; collection: string }>(
-      "../content/brews/*.md"
-    )
-  ).map((post) => post())
-);
-const brews = brewFiles.map((file) => ({
-  ...file.data,
-}));
+// Get all brews using getCollection
+const allBrews = await getCollection("brews");
+const brews = allBrews.map((brew) => brew.data);
 
 // Sort and group brews by status
 const tappedBrews = brews
@@ -30,12 +23,12 @@ const tappedBrews = brews
 
 const brewingBrews = brews
   .filter((brew) => brew.status === "brewing")
-  .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   .slice(0, 2);
 
 const upcomingBrews = brews
   .filter((brew) => brew.status === "upcoming")
-  .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   .slice(0, 2);
 
 // Status-specific styling
