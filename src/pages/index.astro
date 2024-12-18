@@ -48,10 +48,11 @@ const statusStyles = {
     <!-- Background Image with Overlay -->
     <div
       class="absolute inset-0 z-0"
-      style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/assets/images/brewery-hero.jpg') center/cover no-repeat;"
+      style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('/assets/images/brewery-hero.jpg') center/cover no-repeat;"
+      data-theme-toggle
     >
       <div
-        class="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"
+        class="absolute inset-0 bg-gradient-to-b from-light-base/30 to-transparent dark:from-black/60 dark:to-transparent"
       >
       </div>
     </div>
@@ -120,6 +121,35 @@ const statusStyles = {
           }
         });
       });
+
+      // Add theme toggle functionality
+      const themeToggle = document.querySelector("[data-theme-toggle]");
+
+      const updateOverlay = () => {
+        if (document.documentElement.classList.contains("dark")) {
+          themeToggle.style.background =
+            "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/assets/images/brewery-hero.jpg') center/cover no-repeat";
+        } else {
+          themeToggle.style.background =
+            "linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('/assets/images/brewery-hero.jpg') center/cover no-repeat";
+        }
+      };
+
+      // Update on theme change
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.attributeName === "class") {
+            updateOverlay();
+          }
+        });
+      });
+
+      observer.observe(document.documentElement, {
+        attributes: true,
+      });
+
+      // Initial setup
+      updateOverlay();
     </script>
   </div>
 
@@ -140,7 +170,7 @@ const statusStyles = {
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
         <!-- Recently Tapped -->
         <div
-          class="group p-8 bg-light-soft/10 dark:bg-dark-soft/5 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl backdrop-blur-sm"
+          class="group p-8 bg-light-soft/10 dark:bg-dark-soft/5 rounded-xl shadow-md dark:shadow-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:dark:shadow-white/10 backdrop-blur-sm"
         >
           <div
             class="mb-6 text-light-text dark:text-dark-text group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors duration-300"
@@ -196,7 +226,7 @@ const statusStyles = {
 
         <!-- Currently Brewing -->
         <div
-          class="group p-8 bg-light-soft/10 dark:bg-dark-soft/5 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl backdrop-blur-sm"
+          class="group p-8 bg-light-soft/10 dark:bg-dark-soft/5 rounded-xl shadow-md dark:shadow-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:dark:shadow-white/10 backdrop-blur-sm"
         >
           <div
             class="mb-6 text-light-text dark:text-dark-text group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors duration-300"
@@ -253,7 +283,7 @@ const statusStyles = {
 
         <!-- Coming Soon -->
         <div
-          class="group p-8 bg-light-soft/10 dark:bg-dark-soft/5 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl backdrop-blur-sm"
+          class="group p-8 bg-light-soft/10 dark:bg-dark-soft/5 rounded-xl shadow-md dark:shadow-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:dark:shadow-white/10 backdrop-blur-sm"
         >
           <div
             class="mb-6 text-light-text dark:text-dark-text group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors duration-300"
