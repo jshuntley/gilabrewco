@@ -31,7 +31,8 @@ collections:
           name: "tags",
           widget: "list",
           required: false,
-          field: { label: "Tag", name: "tag", widget: "string" },
+          allow_add: true,
+          default: [],
         }
       - { label: "Body", name: "body", widget: "markdown" }
   - name: "brews"
@@ -56,16 +57,22 @@ collections:
           label: "Status",
           name: "status",
           widget: "select",
-          options: ["tapped", "brewing", "upcoming"],
+          options:
+            [
+              "upcoming",
+              "waiting for ingredients",
+              "fermenting",
+              "soft crashing",
+              "crashing",
+              "secondary fermentation",
+              "conditioning",
+              "carbonating",
+              "kegged",
+              "on tap",
+              "gone",
+            ],
         }
-      - {
-          label: "Date",
-          name: "date",
-          widget: "select",
-          options: ["TBA", ""],
-          default: "",
-          required: false,
-        }
+      - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Details", name: "details", widget: "string" }
       - {
           label: "Tasting Notes",
