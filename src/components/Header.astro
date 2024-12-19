@@ -54,7 +54,7 @@ const links = [
                   ? "text-light-accent dark:text-dark-accent after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-light-accent dark:after:bg-dark-accent after:transform after:scale-x-100 after:transition-transform after:duration-200"
                   : "text-light-text dark:text-dark-text hover:text-light-accent dark:hover:text-dark-accent after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-light-accent dark:after:bg-dark-accent after:transform after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-200",
               ]}
-              aria-current={isCurrentPage ? "page" : undefined}
+              aria-current={isCurrentPage ? "page" : "false"}
             >
               {text}
             </a>
@@ -134,7 +134,7 @@ const links = [
                 ? "text-light-accent dark:text-dark-accent after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[2px] after:bg-light-accent dark:after:bg-dark-accent"
                 : "text-light-text dark:text-dark-text hover:text-light-accent dark:hover:text-dark-accent",
             ]}
-            aria-current={isCurrentPage ? "page" : undefined}
+            aria-current={isCurrentPage ? "page" : "false"}
           >
             {text}
           </a>
@@ -154,7 +154,7 @@ const links = [
     let isMenuOpen = false;
 
     links.forEach((link) => {
-      const href = link.getAttribute("href");
+      const href = link.getAttribute("href") || "/";
       const isCurrentPage =
         (href === "/" && path === "/") ||
         (href !== "/" && path.startsWith(href));
@@ -178,7 +178,7 @@ const links = [
         mobileMenu.style.transform = isMenuOpen
           ? "translateX(0)"
           : "translateX(100%)";
-        mobileMenuButton.setAttribute("aria-expanded", isMenuOpen.toString());
+        mobileMenuButton.setAttribute("aria-expanded", String(isMenuOpen));
 
         // Update button icon
         const svg = mobileMenuButton.querySelector("svg");

@@ -14,7 +14,41 @@
             height: 100vh;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
+
+        /* Ensure base styles are applied */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+
+        /* Force light theme for preview */
+        :root {
+            --light-base: #ffffff;
+            --light-soft: #f3f4f6;
+            --light-card: #ffffff;
+            --light-text: #1f2937;
+            --light-accent: #b8956c;
+            --light-muted: #6b7280;
+        }
+
+        /* Preview container styles */
+        .preview-container {
+            background-color: var(--light-base);
+            min-height: 100vh;
+        }
+
+        /* Typography base styles */
+        .prose {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--light-text);
+        }
     </style>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script src="https://unpkg.com/marked@4.3.0/marked.min.js"></script>
+    <link href="https://unpkg.com/@tailwindcss/typography@0.5.9/dist/typography.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -24,6 +58,120 @@
 
     <!-- Include the script that builds the page and powers Decap CMS -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+    <script>
+        // Custom preview component
+        const BlogPostPreview = createClass({
+            render: function() {
+                const entry = this.props.entry;
+                const image = entry.getIn(['data', 'image']);
+                const date = entry.getIn(['data', 'publishDate']);
+                const formattedDate = date ? new Date(date).toLocaleDateString('en-us', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }) : '';
+
+                // Get the raw markdown content
+                const rawContent = this.props.widgetFor('body');
+                
+                // Convert markdown to HTML if content exists
+                const bodyContent = rawContent ? marked.parse(rawContent.props.value || '') : '';
+
+                return h('div', {className: 'preview-container'},
+                    h('div', {className: 'max-w-4xl mx-auto px-4 py-8'},
+                        // Hero Section
+                        h('div', {className: 'relative py-16 bg-gradient-to-b from-gray-50 to-white'},
+                            h('div', {className: 'max-w-3xl mx-auto'},
+                                h('div', {
+                                    className: 'grid grid-cols-1 md:grid-cols-3 gap-8 items-start'
+                                },
+                                    h('div', {
+                                        className: 'md:col-span-2 text-left'
+                                    },
+                                        date && h('div', {
+                                            className: 'inline-flex items-center gap-2 px-4 py-2 rounded-full',
+                                            style: {
+                                                backgroundColor: 'var(--light-soft)',
+                                                color: 'var(--light-text)',
+                                                marginBottom: '1.5rem'
+                                            }
+                                        },
+                                            h('time', {}, formattedDate)
+                                        ),
+                                        h('h1', {
+                                            className: 'text-4xl font-bold mb-6',
+                                            style: {
+                                                color: 'var(--light-text)',
+                                                marginBottom: '1.5rem'
+                                            }
+                                        },
+                                            entry.getIn(['data', 'title'])
+                                        ),
+                                        h('p', {
+                                            className: 'text-xl',
+                                            style: {
+                                                color: 'var(--light-text)',
+                                                opacity: 0.8
+                                            }
+                                        },
+                                            entry.getIn(['data', 'description'])
+                                        )
+                                    ),
+                                    image && h('div', {
+                                        className: 'md:col-span-1',
+                                        style: {
+                                            borderRadius: '0.75rem',
+                                            overflow: 'hidden',
+                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                                            maxWidth: '300px',
+                                            margin: '0 auto'
+                                        }
+                                    },
+                                        h('img', {
+                                            src: image,
+                                            className: 'w-full h-auto object-cover',
+                                            style: {
+                                                maxHeight: '200px'
+                                            },
+                                            alt: entry.getIn(['data', 'title'])
+                                        })
+                                    )
+                                )
+                            )
+                        ),
+                        // Content
+                        h('div', {
+                            className: 'prose prose-lg mx-auto mt-8',
+                            style: {
+                                maxWidth: '65ch',
+                                color: 'var(--light-text)'
+                            }
+                        },
+                            h('div', {
+                                className: 'blog-content',
+                                dangerouslySetInnerHTML: { __html: bodyContent }
+                            })
+                        )
+                    )
+                );
+            }
+        });
+
+        // Register the preview template
+        CMS.registerPreviewTemplate('blog', BlogPostPreview);
+
+        // Register preview styles
+        CMS.registerPreviewStyle('/admin/preview.css');
+
+        // Add custom marked options for better HTML output
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            headerIds: true,
+            smartLists: true
+        });
+    </script>
 </body>
 
 </html>

@@ -1,12 +1,23 @@
 backend:
   name: github
-  repo: "jshuntley/gilabrewco" # Adjust this
+  repo: "jshuntley/gilabrewco"
   branch: main
-  base_url: "https://decap.gilabrewco.com" # Your OAuth proxy domain
+  base_url: "https://decap.gilabrewco.com"
 
 site_url: "https://gilabrewco.com"
+local_backend: true
 
-media_folder: "public/assets/images/" # Adjust if needed
+# Cloudflare Pages specific configuration
+display_url: "https://gilabrewco.com"
+logo_url: "/assets/images/logo.png"
+
+publish_mode: editorial_workflow
+
+# Preview configuration
+site_domain: gilabrewco.pages.dev
+preview_path_date_field: publishDate
+
+media_folder: "public/assets/images/"
 public_folder: "/assets/images/"
 
 collections:
@@ -15,6 +26,7 @@ collections:
     folder: "src/content/blog"
     create: true
     slug: "{{slug}}"
+    preview_path: "blog/{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
