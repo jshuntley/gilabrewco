@@ -18,25 +18,33 @@ const brews: Brew[] = allBrews.map((brew) => brew.data);
 
 // Sort and group brews by status
 const tappedBrews: Brew[] = brews
-  .filter((brew): brew is Brew => brew.status === "tapped")
+  .filter((brew): brew is Brew => ["on tap", "kegged", "carbonating", "conditioning", "gone"].includes(brew.status))
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   .slice(0, 2);
 
 const brewingBrews: Brew[] = brews
-  .filter((brew): brew is Brew => brew.status === "brewing")
+  .filter((brew): brew is Brew => ["fermenting", "soft crashing", "crashing", "secondary fermentation"].includes(brew.status))
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   .slice(0, 2);
 
 const upcomingBrews: Brew[] = brews
-  .filter((brew): brew is Brew => brew.status === "upcoming")
+  .filter((brew): brew is Brew => ["upcoming", "waiting for ingredients"].includes(brew.status))
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   .slice(0, 2);
 
 // Status-specific styling
 const statusStyles: Record<Brew['status'], string> = {
-  tapped: "text-canyon-red font-bold",
-  brewing: "text-sky-blue font-bold",
+  "on tap": "text-light-accent dark:text-dark-accent font-bold",
+  kegged: "text-light-accent dark:text-dark-accent font-bold",
+  carbonating: "text-light-accent dark:text-dark-accent font-bold",
+  conditioning: "text-light-accent dark:text-dark-accent font-bold",
+  gone: "text-light-accent/60 dark:text-dark-accent/60 font-bold",
+  fermenting: "text-light-accent dark:text-dark-accent font-bold",
+  "soft crashing": "text-light-accent dark:text-dark-accent font-bold",
+  crashing: "text-light-accent dark:text-dark-accent font-bold",
+  "secondary fermentation": "text-light-accent dark:text-dark-accent font-bold",
   upcoming: "text-light-accent dark:text-dark-accent font-bold",
+  "waiting for ingredients": "text-light-accent dark:text-dark-accent font-bold"
 };
 
 ---
@@ -59,29 +67,29 @@ const statusStyles: Record<Brew['status'], string> = {
     </div>
 
     <!-- Content -->
-    <div class="relative z-10 px-4 max-w-7xl mx-auto mt-[30vh]">
+    <div class="relative z-10 px-4 max-w-7xl mx-auto mt-[25vh] sm:mt-[30vh]">
       <h1
-        class="text-[clamp(3rem,8vw,6rem)] font-bold text-white mb-6 opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards]"
+        class="text-[clamp(2.5rem,6vw,6rem)] font-bold text-white mb-4 sm:mb-6 opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards]"
       >
         Gila Brewing Co.
       </h1>
       <p
-        class="text-[clamp(1.2rem,3vw,2rem)] text-white/90 max-w-3xl mx-auto mb-12 opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards_0.2s]"
+        class="text-[clamp(1rem,2.5vw,2rem)] text-white/90 max-w-3xl mx-auto mb-8 sm:mb-12 opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards_0.2s]"
       >
         A homebrewing duo who love beer and want to share their experiences
       </p>
       <div
-        class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards_0.4s]"
+        class="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards_0.4s]"
       >
         <a
           href="/blog"
-          class="w-full sm:w-32 px-8 py-4 bg-light-accent/90 dark:bg-dark-accent/90 text-light-base dark:text-dark-base rounded-lg font-sans font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-light-accent hover:dark:bg-dark-accent hover:-translate-y-0.5 hover:shadow-lg text-center"
+          class="w-full sm:w-32 px-6 sm:px-8 py-3 sm:py-4 bg-light-accent/90 dark:bg-dark-accent/90 text-light-base dark:text-dark-base rounded-lg font-sans font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-light-accent hover:dark:bg-dark-accent hover:-translate-y-0.5 hover:shadow-lg text-center text-sm sm:text-base"
         >
           Blog
         </a>
         <a
           href="#about"
-          class="w-full sm:w-32 px-8 py-4 bg-white/10 text-white rounded-lg font-sans font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white/20 hover:-translate-y-0.5 hover:shadow-lg backdrop-blur-sm text-center"
+          class="w-full sm:w-32 px-6 sm:px-8 py-3 sm:py-4 bg-white/10 text-white rounded-lg font-sans font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white/20 hover:-translate-y-0.5 hover:shadow-lg backdrop-blur-sm text-center text-sm sm:text-base"
         >
           Beer
         </a>
@@ -172,9 +180,9 @@ const statusStyles: Record<Brew['status'], string> = {
   </div>
 
   <!-- Features Section -->
-  <div class="py-24 bg-light-base dark:bg-dark-base" id="about">
+  <div class="py-16 sm:py-24 bg-light-base dark:bg-dark-base" id="about">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-20">
+      <div class="text-center mb-12 sm:mb-20">
         <h2 
           style="
             background: linear-gradient(to right, var(--from-color), var(--via-color), var(--from-color));
@@ -186,16 +194,16 @@ const statusStyles: Record<Brew['status'], string> = {
             line-height: 1.4;
             padding-bottom: 0.2em;
           "
-          class="text-4xl font-bold mb-4"
+          class="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4"
         >
           What's Brewing
         </h2>
-        <p class="text-xl text-light-text/80 dark:text-dark-text/80 max-w-3xl mx-auto">
+        <p class="text-lg sm:text-xl text-light-text/80 dark:text-dark-text/80 max-w-3xl mx-auto">
           From concept to keg, here's what's happening in our brewhouse
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-12">
         {[
           { title: "In the Works", brews: upcomingBrews, icon: "checklist", emptyText: "No upcoming brews planned", subText: "Planning our next creation" },
           { title: "In the Tank", brews: brewingBrews, icon: "barrel", emptyText: "Nothing brewing at the moment", subText: "New batch coming soon" },
@@ -234,7 +242,7 @@ const statusStyles: Record<Brew['status'], string> = {
                 )}
               </div>
 
-              <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mb-4">
+              <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mb-4 pb-2 border-b-2 border-light-accent/30 dark:border-dark-accent/30">
                 {section.title}
               </h3>
 
@@ -245,16 +253,16 @@ const statusStyles: Record<Brew['status'], string> = {
                       class="opacity-0 animate-[fadeIn_0.5s_ease_forwards] border-b border-light-text/10 dark:border-dark-text/10 pb-4 last:border-b-0"
                       style={`animation-delay: ${(sectionIndex * 3 + brewIndex) * 150}ms`}
                     >
-                      <h4 class="font-bold mb-1 text-light-accent dark:text-dark-accent">
+                      <h4 class="text-lg font-bold mb-2 text-light-text dark:text-dark-text group-hover:text-light-accent dark:group-hover:text-dark-accent transition-colors duration-300">
                         {brew.name}
                       </h4>
-                      <div class="flex items-center text-sm text-light-text/60 dark:text-dark-text/60 mb-2">
-                        <span>{brew.style} • {brew.abv}% ABV</span>
+                      <div class="flex items-center text-sm text-light-text/60 dark:text-dark-text/60 mb-3">
+                        <span class="font-medium">{brew.style} • {brew.abv}% ABV</span>
                         <span class="inline-flex items-center ml-2">
                           <span 
                             class={`w-2 h-2 rounded-full mr-2 animate-pulse
-                              ${brew.status === 'tapped' ? 'bg-canyon-red' : 
-                                brew.status === 'brewing' ? 'bg-sky-blue' : 
+                              ${["on tap", "kegged", "carbonating", "conditioning", "gone"].includes(brew.status) ? 'bg-light-accent dark:bg-dark-accent' : 
+                                ["fermenting", "soft crashing", "crashing", "secondary fermentation"].includes(brew.status) ? 'bg-light-accent dark:bg-dark-accent' : 
                                 'bg-light-accent dark:bg-dark-accent'}`}
                           ></span>
                           <span class={statusStyles[brew.status]}>
@@ -262,16 +270,16 @@ const statusStyles: Record<Brew['status'], string> = {
                           </span>
                         </span>
                       </div>
-                      <p class="text-light-text/90 dark:text-dark-text/90">
+                      <p class="text-base text-light-text/90 dark:text-dark-text/90 leading-relaxed">
                         {brew.description}
                       </p>
                       {brew.notes && (
-                        <p class="text-sm text-light-text/80 dark:text-dark-text/80 mt-2">
+                        <p class="text-sm text-light-text/70 dark:text-dark-text/70 mt-3 italic">
                           {brew.notes}
                         </p>
                       )}
-                      <div class="mt-2">
-                        <span class={statusStyles[brew.status]}>
+                      <div class="mt-3 text-sm">
+                        <span class={`${statusStyles[brew.status]} tracking-wide`}>
                           {brew.details}
                         </span>
                       </div>

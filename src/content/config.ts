@@ -7,7 +7,22 @@ const brewsCollection = defineCollection({
     description: z.string(),
     style: z.string(),
     abv: z.number(),
-    status: z.enum(['tapped', 'brewing', 'upcoming']),
+    status: z.enum([
+      // Upcoming phase
+      'upcoming',
+      'waiting for ingredients',
+      // Brewing phases
+      'fermenting',
+      'soft crashing',
+      'crashing',
+      'secondary fermentation',
+      // Conditioning phases
+      'conditioning',
+      'carbonating',
+      'kegged',
+      'on tap',
+      'gone'
+    ]),
     date: z.string(),
     details: z.string(),
     notes: z.string().optional()
