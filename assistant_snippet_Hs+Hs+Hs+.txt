@@ -1,0 +1,14 @@
+1|{
+2|  content.image && (
+3|    <div class="mb-8">
+4|      <img
+5|        src={content.image}
+6|        alt={content.title}
+7|        width="1200"
+8|        height="630"
+9|        class="rounded-lg shadow-lg w-full h-auto object-cover"
+10|        loading="eager"
+11|      />
+12|    </div>
+13|  )
+14|} 

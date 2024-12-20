@@ -15,7 +15,8 @@ publish_mode: editorial_workflow
 
 # Preview configuration
 site_domain: gilabrewco.pages.dev
-preview_path_date_field: publishDate
+preview_path: "blog/{{slug}}"
+preview_path_date_field: "publishDate"
 
 media_folder: "public/assets/images/"
 public_folder: "/assets/images/"

@@ -73,8 +73,11 @@ module.exports = {
             },
           },
         },
-      })
+      }),
+      backgroundImage: {
+        'hero-image': "url('/assets/images/brewery-hero.webp')",
+      },
     },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [require('@tailwindcss/typography'), require('@tailwindcss/aspect-ratio')],
 };

@@ -57,17 +57,15 @@ const formattedDate = new Date(content.publishDate).toLocaleDateString(
         <!-- Featured Image -->
         {
           content.image && (
-            <div class="mt-8 lg:mt-0 relative">
-              <div class="aspect-[4/3] rounded-xl overflow-hidden shadow-xl bg-light-soft dark:bg-dark-soft">
-                <Image
-                  src={content.image}
-                  alt={content.title}
-                  width={1200}
-                  height={900}
-                  class="w-full h-full object-cover"
-                />
-              </div>
-              <div class="absolute inset-0 ring-1 ring-inset ring-light-text/10 dark:ring-dark-text/10 rounded-xl" />
+            <div class="mb-8">
+              <img
+                src={content.image}
+                alt={content.title}
+                width="1200"
+                height="630"
+                class="rounded-lg shadow-lg w-full h-auto object-cover"
+                loading="eager"
+              />
             </div>
           )
         }

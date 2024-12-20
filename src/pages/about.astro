@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
+import CheersImage from "../assets/images/cheers.jpg";
+import HomebrewImage from "../assets/images/homebrew.jpg";
 
 const title = "About | Gila Brewing Co.";
 const description = "Learn about our brewing philosophy and history";
@@ -57,13 +59,17 @@ const permalink = new URL(Astro.url.pathname, Astro.site).href;
           </p>
         </div>
         <div class="order-1 md:order-2">
-          <Image
-            src="/assets/images/cheers.jpg"
-            alt="Craft beer brewing process"
-            width={800}
-            height={400}
-            class="rounded-xl shadow-lg w-full h-[400px] object-cover"
-          />
+          <div class="aspect-w-16 aspect-h-9">
+            <Image
+              src={CheersImage}
+              alt="Craft beer brewing process"
+              width={800}
+              height={400}
+              class="rounded-xl shadow-lg w-full h-full object-cover"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
         </div>
       </section>
 
@@ -91,13 +97,17 @@ const permalink = new URL(Astro.url.pathname, Astro.site).href;
           </p>
         </div>
         <div class="order-1">
-          <Image
-            src="/assets/images/homebrew.jpg"
-            alt="Our brewery equipment"
-            width={800}
-            height={400}
-            class="rounded-xl shadow-lg w-full h-[400px] object-cover"
-          />
+          <div class="aspect-w-16 aspect-h-9">
+            <Image
+              src={HomebrewImage}
+              alt="Our brewery equipment"
+              width={800}
+              height={400}
+              class="rounded-xl shadow-lg w-full h-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
         </div>
       </section>
     </div>
@@ -106,20 +116,41 @@ const permalink = new URL(Astro.url.pathname, Astro.site).href;
 
 <style>
   .about-image {
-    float: right;
-    margin: -3em -7em 2em 2em;
+    display: block;
+    margin: 0 auto 2rem;
     max-width: 300px;
+    width: 100%;
   }
 
   .about-image img {
-    border-radius: 8px;
-    margin-bottom: 1.5em;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    height: auto;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
-  @media (max-width: 1020px) {
-    .about-image {
-      float: none;
-      margin: 0 auto 2em;
+  @supports (aspect-ratio: 16/9) {
+    .aspect-w-16.aspect-h-9 {
+      aspect-ratio: 16/9;
+    }
+  }
+
+  @supports not (aspect-ratio: 16/9) {
+    .aspect-w-16.aspect-h-9 {
+      position: relative;
+      padding-bottom: 56.25%;
+    }
+
+    .aspect-w-16.aspect-h-9 img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
   }
 </style>

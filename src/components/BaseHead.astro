@@ -13,21 +13,15 @@ const socialUrl = new URL(
   "assets/social.png",
   Astro.site?.href ?? "https://gilabrewing.com/"
 ).href;
-
-// Declare global window interface
-declare global {
-  interface Window {
-    themeToggle: {
-      toggle: () => boolean;
-    };
-  }
-}
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width" />
-<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1,viewport-fit=cover"
+/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>
@@ -49,70 +43,75 @@ declare global {
 <meta property="twitter:image" content={socialUrl} />
 
 <!-- Theme handling script -->
-<script is:inline define:vars={{ isDark: false }}>
-  (function () {
-    function applyTheme(theme) {
-      document.documentElement.classList.toggle("dark", theme === "dark");
-      localStorage.setItem("theme", theme);
-    }
+<script is:inline>
+  function applyTheme(theme) {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+  }
 
-    // Get initial theme
-    const theme =
-      localStorage.getItem("theme") ||
-      (window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light");
+  // Get initial theme
+  const theme =
+    localStorage.getItem("theme") ||
+    (window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light");
 
-    // Apply theme immediately
-    applyTheme(theme);
+  // Apply theme immediately
+  applyTheme(theme);
 
-    // Handle system theme changes
-    window
-      .matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", (e) => {
-        if (!localStorage.getItem("theme")) {
-          applyTheme(e.matches ? "dark" : "light");
-        }
-      });
+  // Handle system theme changes
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", (e) => {
+      if (!localStorage.getItem("theme")) {
+        applyTheme(e.matches ? "dark" : "light");
+      }
+    });
 
-    // Make theme functions available globally
-    window.themeToggle = {
-      toggle: () => {
-        const isDark = document.documentElement.classList.contains("dark");
-        applyTheme(isDark ? "light" : "dark");
-        return !isDark;
-      },
-    };
-  })();
+  // Make theme functions available globally
+  window.themeToggle = {
+    toggle: () => {
+      const isDark = document.documentElement.classList.contains("dark");
+      applyTheme(isDark ? "light" : "dark");
+      return !isDark;
+    },
+  };
 </script>
 
-<script>
-  // Handle theme toggle clicks
-  document.addEventListener(
-    "astro:page-load",
-    () => {
-      const toggle = document.getElementById("theme-toggle");
-      if (toggle) {
-        toggle.addEventListener("click", () => {
-          const isDark = window.themeToggle?.toggle();
-          toggle.setAttribute("aria-checked", isDark.toString());
-        });
-      }
-    },
-    { once: false }
-  );
+<style is:inline>
+  :root {
+    --theme-transition: background-color 0.3s ease, color 0.3s ease;
+  }
 
-  // Handle theme persistence during transitions
-  document.addEventListener(
-    "astro:after-swap",
-    () => {
-      const theme =
-        localStorage.getItem("theme") ||
-        (window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light");
-      document.documentElement.classList.toggle("dark", theme === "dark");
-    },
-    { once: false }
-  );
+  html {
+    transition: var(--theme-transition);
+  }
+
+  /* Force hardware acceleration */
+  body {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+</style>
+
+<script>
+  // Add type declaration for window.themeToggle
+  declare global {
+    interface Window {
+      themeToggle?: {
+        toggle: () => boolean;
+      };
+    }
+  }
+
+  // Handle theme toggle clicks
+  const toggle = document.getElementById("theme-toggle");
+  if (toggle) {
+    toggle.addEventListener("click", () => {
+      const isDark = window.themeToggle?.toggle() ?? false;
+      toggle.setAttribute("aria-checked", isDark.toString());
+    });
+  }
 </script>

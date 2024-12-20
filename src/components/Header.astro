@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import LogoImage from "../assets/images/logo.png";
 import ThemeToggle from "./ThemeToggle.astro";
 
 interface Props {
@@ -26,7 +27,7 @@ const links = [
         aria-label="Gila Brewing Co. home"
       >
         <Image
-          src="/assets/images/logo.png"
+          src={LogoImage}
           alt="Gila Brewing Co."
           width={48}
           height={48}
@@ -49,12 +50,12 @@ const links = [
             <a
               href={href}
               class:list={[
-                "relative font-sans text-base font-medium tracking-wide transition-colors duration-200",
+                "font-sans text-base tracking-wide transition-colors duration-200",
                 isCurrentPage
-                  ? "text-light-accent dark:text-dark-accent after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-light-accent dark:after:bg-dark-accent after:transform after:scale-x-100 after:transition-transform after:duration-200"
-                  : "text-light-text dark:text-dark-text hover:text-light-accent dark:hover:text-dark-accent after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-light-accent dark:after:bg-dark-accent after:transform after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-200",
+                  ? "text-light-accent dark:text-dark-accent font-[600] font-medium"
+                  : "text-light-text dark:text-dark-text hover:text-light-accent dark:hover:text-dark-accent font-[600] font-medium",
               ]}
-              aria-current={isCurrentPage ? "page" : "false"}
+              aria-current={isCurrentPage ? "page" : undefined}
             >
               {text}
             </a>
@@ -129,12 +130,12 @@ const links = [
           <a
             href={href}
             class:list={[
-              "relative block px-3 py-4 text-lg font-medium border-b border-light-text/10 dark:border-dark-text/10 transition-colors duration-200",
+              "block px-3 py-4 text-lg border-b border-light-text/10 dark:border-dark-text/10 transition-colors duration-200 font-[600] font-medium",
               isCurrentPage
-                ? "text-light-accent dark:text-dark-accent after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[2px] after:bg-light-accent dark:after:bg-dark-accent"
+                ? "text-light-accent dark:text-dark-accent"
                 : "text-light-text dark:text-dark-text hover:text-light-accent dark:hover:text-dark-accent",
             ]}
-            aria-current={isCurrentPage ? "page" : "false"}
+            aria-current={isCurrentPage ? "page" : undefined}
           >
             {text}
           </a>
@@ -148,27 +149,21 @@ const links = [
   // Update current page indicator during transitions
   document.addEventListener("astro:page-load", () => {
     const path = window.location.pathname;
-    const links = document.querySelectorAll("header nav a, #mobile-menu a");
+    const links = document.querySelectorAll("header nav a");
     const mobileMenuButton = document.getElementById("mobile-menu-button");
     const mobileMenu = document.getElementById("mobile-menu");
     let isMenuOpen = false;
 
     links.forEach((link) => {
-      const href = link.getAttribute("href") || "/";
       const isCurrentPage =
-        (href === "/" && path === "/") ||
-        (href !== "/" && path.startsWith(href));
+        link.getAttribute("href") === path ||
+        (path === "/" && link.getAttribute("href") === "/");
 
-      // Update classes for current page indication
-      if (isCurrentPage) {
-        link.classList.add("text-light-accent", "dark:text-dark-accent");
-        link.classList.remove("text-light-text", "dark:text-dark-text");
-        link.setAttribute("aria-current", "page");
-      } else {
-        link.classList.remove("text-light-accent", "dark:text-dark-accent");
-        link.classList.add("text-light-text", "dark:text-dark-text");
-        link.setAttribute("aria-current", "false");
-      }
+      link.classList.toggle("text-light-accent", isCurrentPage);
+      link.classList.toggle("dark:text-dark-accent", isCurrentPage);
+      link.classList.toggle("text-light-text", !isCurrentPage);
+      link.classList.toggle("dark:text-dark-text", !isCurrentPage);
+      link.setAttribute("aria-current", isCurrentPage ? "page" : "false");
     });
 
     // Mobile menu toggle
@@ -178,7 +173,7 @@ const links = [
         mobileMenu.style.transform = isMenuOpen
           ? "translateX(0)"
           : "translateX(100%)";
-        mobileMenuButton.setAttribute("aria-expanded", String(isMenuOpen));
+        mobileMenuButton.setAttribute("aria-expanded", isMenuOpen.toString());
 
         // Update button icon
         const svg = mobileMenuButton.querySelector("svg");
@@ -205,3 +200,12 @@ const links = [
     }
   });
 </script>
+
+<style>
+  /* Firefox-specific font weight fix */
+  @-moz-document url-prefix() {
+    a {
+      font-weight: 600 !important;
+    }
+  }
+</style>
