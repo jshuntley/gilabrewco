@@ -4,6 +4,6 @@ module.exports = {
     autoprefixer: {
       flexbox: true,
       grid: true
-    },
-  },
-}
+    }
+  }
+};

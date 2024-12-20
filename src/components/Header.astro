@@ -2,18 +2,25 @@
 import { Image } from "astro:assets";
 import LogoImage from "../assets/images/logo.png";
 import ThemeToggle from "./ThemeToggle.astro";
+import MobileMenu from "./MobileMenu.astro";
 
 interface Props {
   current?: string;
 }
 
+interface NavLink {
+  text: string;
+  href: string;
+  id: string;
+}
+
 const { current = "" } = Astro.props;
 
-const links = [
+const links: NavLink[] = [
   { text: "Home", href: "/", id: "" },
   { text: "About", href: "/about", id: "about" },
   { text: "Blog", href: "/blog", id: "blog" },
-] as const;
+];
 ---
 
 <header
@@ -117,86 +124,26 @@ const links = [
   </nav>
 </header>
 
-<!-- Mobile Menu -->
-<div
-  class="sm:hidden fixed inset-0 bg-light-base/95 dark:bg-dark-base/95 backdrop-blur-md z-40 transition-transform duration-300 transform translate-x-full"
-  id="mobile-menu"
->
-  <div class="pt-20 pb-3 space-y-1 px-4">
-    {
-      links.map(({ text, href, id }) => {
-        const isCurrentPage = current === id;
-        return (
-          <a
-            href={href}
-            class:list={[
-              "block px-3 py-4 text-lg font-medium border-b border-light-text/10 dark:border-dark-text/10 transition-colors duration-200",
-              isCurrentPage
-                ? "text-light-accent dark:text-dark-accent"
-                : "text-light-text dark:text-dark-text hover:text-light-accent dark:hover:text-dark-accent",
-            ]}
-            aria-current={isCurrentPage ? "page" : undefined}
-          >
-            {text}
-          </a>
-        );
-      })
-    }
-  </div>
-</div>
+<MobileMenu current={current} links={links} />
 
 <script>
-  // Update current page indicator during transitions
-  document.addEventListener("astro:page-load", () => {
+  function updateCurrentPage() {
     const path = window.location.pathname;
-    const links = document.querySelectorAll("header nav a");
-    const mobileMenuButton = document.getElementById("mobile-menu-button");
-    const mobileMenu = document.getElementById("mobile-menu");
-    let isMenuOpen = false;
+    const links = document.querySelectorAll<HTMLAnchorElement>("header nav a");
 
     links.forEach((link) => {
-      const isCurrentPage =
-        link.getAttribute("href") === path ||
-        (path === "/" && link.getAttribute("href") === "/");
+      const href = link.getAttribute("href");
+      const isCurrentPage = href === path || (path === "/" && href === "/");
 
-      link.classList.toggle("text-light-accent", isCurrentPage);
-      link.classList.toggle("dark:text-dark-accent", isCurrentPage);
-      link.classList.toggle("text-light-text", !isCurrentPage);
-      link.classList.toggle("dark:text-dark-text", !isCurrentPage);
-      link.setAttribute("aria-current", isCurrentPage ? "page" : "false");
+      if (href) {
+        link.classList.toggle("text-light-accent", isCurrentPage);
+        link.classList.toggle("dark:text-dark-accent", isCurrentPage);
+        link.classList.toggle("text-light-text", !isCurrentPage);
+        link.classList.toggle("dark:text-dark-text", !isCurrentPage);
+        link.setAttribute("aria-current", isCurrentPage ? "page" : "false");
+      }
     });
+  }
 
-    // Mobile menu toggle
-    if (mobileMenuButton && mobileMenu) {
-      mobileMenuButton.addEventListener("click", () => {
-        isMenuOpen = !isMenuOpen;
-        mobileMenu.style.transform = isMenuOpen
-          ? "translateX(0)"
-          : "translateX(100%)";
-        mobileMenuButton.setAttribute("aria-expanded", isMenuOpen.toString());
-
-        // Update button icon
-        const svg = mobileMenuButton.querySelector("svg");
-        if (svg) {
-          svg.innerHTML = isMenuOpen
-            ? '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />'
-            : '<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />';
-        }
-      });
-
-      // Close menu when clicking a link
-      mobileMenu.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-          isMenuOpen = false;
-          mobileMenu.style.transform = "translateX(100%)";
-          mobileMenuButton.setAttribute("aria-expanded", "false");
-          const svg = mobileMenuButton.querySelector("svg");
-          if (svg) {
-            svg.innerHTML =
-              '<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />';
-          }
-        });
-      });
-    }
-  });
+  updateCurrentPage();
 </script>

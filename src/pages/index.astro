@@ -76,18 +76,19 @@ const brewsByType: Record<SectionType, Brew[]> = {
 };
 
 // Status styling with proper typing
+const baseStyle = "text-light-accent dark:text-dark-accent font-bold";
 const statusStyles: Record<BrewStatus, string> = {
-  "on tap": "text-light-accent dark:text-dark-accent font-bold",
-  kegged: "text-light-accent dark:text-dark-accent font-bold",
-  carbonating: "text-light-accent dark:text-dark-accent font-bold",
-  conditioning: "text-light-accent dark:text-dark-accent font-bold",
+  "on tap": baseStyle,
+  kegged: baseStyle,
+  carbonating: baseStyle,
+  conditioning: baseStyle,
   gone: "text-light-accent/60 dark:text-dark-accent/60 font-bold",
-  fermenting: "text-light-accent dark:text-dark-accent font-bold",
-  "soft crashing": "text-light-accent dark:text-dark-accent font-bold",
-  crashing: "text-light-accent dark:text-dark-accent font-bold",
-  "secondary fermentation": "text-light-accent dark:text-dark-accent font-bold",
-  upcoming: "text-light-accent dark:text-dark-accent font-bold",
-  "waiting for ingredients": "text-light-accent dark:text-dark-accent font-bold"
+  fermenting: baseStyle,
+  "soft crashing": baseStyle,
+  crashing: baseStyle,
+  "secondary fermentation": baseStyle,
+  upcoming: baseStyle,
+  "waiting for ingredients": baseStyle
 };
 ---
 
@@ -125,28 +126,24 @@ const statusStyles: Record<BrewStatus, string> = {
       >
         <a
           href="/blog"
-          class="group relative w-full sm:w-32 px-6 sm:px-8 py-3 sm:py-4 bg-light-accent/90 dark:bg-dark-accent/90 text-light-base/90 dark:text-dark-base/90 rounded-lg font-sans font-semibold uppercase tracking-wider transition-all duration-300 hover:text-light-base dark:hover:text-dark-base text-center text-sm sm:text-base"
+          class="group relative overflow-hidden w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-light-accent/90 dark:bg-dark-accent/90 text-light-base/90 dark:text-dark-base/90 rounded-lg font-sans font-semibold uppercase tracking-wider transition-all duration-300"
         >
-          <span class="relative">
-            Blog
-            <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-light-base dark:bg-dark-base transform scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100"></span>
-          </span>
+          <span class="relative z-10">Blog</span>
+          <div class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-light-base/10 dark:bg-dark-base/10 transition-transform duration-300 ease-out"></div>
         </a>
         <a
           href="#about"
-          class="group relative w-full sm:w-32 px-6 sm:px-8 py-3 sm:py-4 bg-white/20 backdrop-blur-sm text-white/90 hover:text-white rounded-lg font-sans font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white/30 text-center text-sm sm:text-base"
+          class="group relative overflow-hidden w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white/20 backdrop-blur-sm text-white/90 rounded-lg font-sans font-semibold uppercase tracking-wider transition-all duration-300"
         >
-          <span class="relative">
-            Beer
-            <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-white transform scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100"></span>
-          </span>
+          <span class="relative z-10">Beer</span>
+          <div class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-white/10 transition-transform duration-300 ease-out"></div>
         </a>
       </div>
 
-      <!-- Scroll Indicator moved inside hero section -->
+      <!-- Scroll Indicator -->
       <a
         href="#about"
-        class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce hover:text-canyon-red transition-colors duration-200 cursor-pointer"
+        class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce opacity-80 hover:opacity-100 transition-opacity duration-200"
         aria-label="Scroll to What's Brewing section"
       >
         <svg
@@ -159,59 +156,12 @@ const statusStyles: Record<BrewStatus, string> = {
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            d="M19 14l-7 7m0 0l-7-7m7 7V3"
+          ></path>
         </svg>
       </a>
     </div>
   </div>
-
-  <!-- Add smooth scroll behavior -->
-  <script>
-    const anchors =
-      document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]');
-
-    anchors.forEach((anchor) => {
-      anchor.addEventListener("click", (e: MouseEvent) => {
-        e.preventDefault();
-        const href = anchor.getAttribute("href");
-        if (!href) return;
-
-        const targetElement = document.querySelector(href);
-        if (targetElement) {
-          targetElement.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        }
-      });
-    });
-
-    // Remove the overlay manipulation code since it's handled by CSS now
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === "class") {
-          // The CSS variables will handle the transition automatically
-        }
-      });
-    });
-
-    if (document.documentElement) {
-      observer.observe(document.documentElement, {
-        attributes: true,
-      });
-    }
-
-    // Cleanup on page unload
-    window.addEventListener("unload", () => {
-      observer.disconnect();
-    });
-
-    // Add this at the top of your existing script
-    const img = new Image();
-    img.src = '../assets/images/brewery-hero.webp';
-    img.onload = () => console.log('Hero image loaded successfully');
-    img.onerror = (e) => console.error('Hero image failed to load:', e);
-  </script>
 
   <!-- Features Section -->
   <div class="py-16 sm:py-24 bg-light-base dark:bg-dark-base" id="about">
@@ -294,10 +244,7 @@ const statusStyles: Record<BrewStatus, string> = {
                           <span class="font-medium">{brew.style} • {brew.abv}% ABV</span>
                           <span class="inline-flex items-center ml-2">
                             <span 
-                              class={`w-2 h-2 rounded-full mr-2 animate-pulse
-                                ${["on tap", "kegged", "carbonating", "conditioning", "gone"].includes(brew.status) ? 'bg-light-accent dark:bg-dark-accent' : 
-                                  ["fermenting", "soft crashing", "crashing", "secondary fermentation"].includes(brew.status) ? 'bg-light-accent dark:bg-dark-accent' : 
-                                  'bg-light-accent dark:bg-dark-accent'}`}
+                              class={`w-2 h-2 rounded-full mr-2 animate-pulse bg-light-accent dark:bg-dark-accent`}
                             ></span>
                             <span class={statusStyles[brew.status]}>
                               {brew.status}
@@ -359,23 +306,21 @@ const statusStyles: Record<BrewStatus, string> = {
 
   /* Firefox-specific styles */
   @-moz-document url-prefix() {
-    .group:hover .absolute {
+    .group:hover .absolute[class*="conic-gradient"] {
       opacity: 1;
-      background: linear-gradient(90deg,
+      background: linear-gradient(
+        var(--angle),
         var(--light-accent) 0%,
         transparent 50%,
         var(--light-accent) 100%
       );
-      animation: firefoxGradient 8s linear infinite;
+      animation: rotate 4s linear infinite;
     }
 
-    @keyframes firefoxGradient {
-      0% { background-position: 200% 50%; }
-      100% { background-position: -200% 50%; }
-    }
-
-    .absolute {
-      background-size: 200% 100% !important;
+    /* Fix for button hover animations in Firefox */
+    .group:hover .absolute:not([class*="conic-gradient"]) {
+      transform: translateX(0);
+      transition: transform 0.3s ease-out;
     }
   }
 
@@ -383,12 +328,8 @@ const statusStyles: Record<BrewStatus, string> = {
   @supports not (background: paint(something)) and (not (-moz-appearance: none)) {
     .group:hover .absolute {
       opacity: 1;
-      background: linear-gradient(90deg, 
-        var(--tw-gradient-from) 0%,
-        var(--tw-gradient-via) 50%,
-        var(--tw-gradient-to) 100%
-      );
-      animation: none;
+      transform: translateX(0);
+      transition: transform 0.3s ease-out;
     }
   }
 
@@ -399,11 +340,3 @@ const statusStyles: Record<BrewStatus, string> = {
     }
   }
 </style>
-
-<script>
-  // Move smooth scroll logic to a separate utility file
-  import { initSmoothScroll } from '../utils/smoothScroll';
-  
-  // Initialize smooth scroll behavior
-  initSmoothScroll();
-</script>

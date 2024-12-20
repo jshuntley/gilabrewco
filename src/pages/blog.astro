@@ -1,23 +1,26 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import { Image } from "astro:assets";
 
 const title = "Blog | Gila Brewing Co.";
 const description = "Brewing journal and latest updates from the wilderness";
 const permalink = new URL(Astro.url.pathname, Astro.site).href;
 
+type BlogPost = CollectionEntry<"blog">;
+type Tag = string;
+
 const allPosts = await getCollection("blog");
 const sortedPosts = allPosts.sort(
-  (a, b) =>
+  (a: BlogPost, b: BlogPost) =>
     new Date(b.data.publishDate).valueOf() -
     new Date(a.data.publishDate).valueOf()
 );
 
-// Get all unique tags
-const allTags = [
-  ...new Set(sortedPosts.flatMap((post) => post.data.tags || [])),
-];
+// Get all unique tags with proper typing
+const allTags = Array.from(
+  new Set<Tag>(sortedPosts.flatMap((post: BlogPost) => post.data.tags || []))
+);
 
 // Estimate reading time
 function getReadingTime(content: string) {
@@ -91,7 +94,7 @@ function getReadingTime(content: string) {
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {
-        sortedPosts.map((post) => {
+        sortedPosts.map((post: BlogPost) => {
           const href = `/blog/${post.slug}`;
           const readingTime = getReadingTime(post.body);
           return (
@@ -167,7 +170,7 @@ function getReadingTime(content: string) {
                   </p>
                   {post.data.tags && (
                     <div class="flex flex-wrap gap-2 mb-4">
-                      {post.data.tags.map((tag) => (
+                      {post.data.tags.map((tag: Tag) => (
                         <span class="px-2 py-1 text-xs rounded-full bg-light-soft dark:bg-dark-soft text-light-text/70 dark:text-dark-text/70">
                           {tag}
                         </span>
@@ -199,19 +202,32 @@ function getReadingTime(content: string) {
 </BaseLayout>
 
 <script>
+  // Type definitions
+  interface HTMLArticleElement extends HTMLElement {
+    style: CSSStyleDeclaration;
+    getAttribute(name: string): string | null;
+  }
+
+  interface HTMLButtonElement extends HTMLElement {
+    classList: DOMTokenList;
+    getAttribute(name: string): string | null;
+  }
+
   // Tag filtering functionality
-  const tagButtons = document.querySelectorAll("#tag-filters button");
-  const articles = document.querySelectorAll("article");
+  const tagButtons = document.querySelectorAll<HTMLButtonElement>(
+    "#tag-filters button"
+  );
+  const articles = document.querySelectorAll<HTMLArticleElement>("article");
 
   tagButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const tag = button.getAttribute("data-tag") || "all";
 
       // Update active button state
-      tagButtons.forEach((btn) =>
-        btn.classList.remove("bg-canyon-red/10", "dark:bg-sky-blue/10")
-      );
-      button.classList.add("bg-canyon-red/10", "dark:bg-sky-blue/10");
+      tagButtons.forEach((btn) => {
+        btn.classList.remove("bg-light-accent/10", "dark:bg-dark-accent/10");
+      });
+      button.classList.add("bg-light-accent/10", "dark:bg-dark-accent/10");
 
       // Filter articles
       articles.forEach((article) => {

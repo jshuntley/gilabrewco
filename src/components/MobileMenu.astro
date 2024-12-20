@@ -1,0 +1,78 @@
+---
+interface Props {
+  current?: string;
+  links: {
+    text: string;
+    href: string;
+    id: string;
+  }[];
+}
+
+const { current = "", links } = Astro.props;
+---
+
+<div
+  class="sm:hidden fixed inset-0 bg-light-base/95 dark:bg-dark-base/95 backdrop-blur-md z-40 transition-transform duration-300 transform translate-x-full"
+  id="mobile-menu"
+>
+  <div class="pt-20 pb-3 space-y-1 px-4">
+    {
+      links.map(({ text, href, id }) => {
+        const isCurrentPage = current === id;
+        return (
+          <a
+            href={href}
+            class:list={[
+              "block px-3 py-4 text-lg font-medium border-b border-light-text/10 dark:border-dark-text/10 transition-colors duration-200",
+              isCurrentPage
+                ? "text-light-accent dark:text-dark-accent"
+                : "text-light-text dark:text-dark-text hover:text-light-accent dark:hover:text-dark-accent",
+            ]}
+            aria-current={isCurrentPage ? "page" : undefined}
+          >
+            {text}
+          </a>
+        );
+      })
+    }
+  </div>
+</div>
+
+<script>
+  const menuIcons = {
+    open: '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />',
+    closed:
+      '<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />',
+  };
+
+  function toggleMenu(isOpen: boolean) {
+    const mobileMenuButton = document.getElementById("mobile-menu-button");
+    const mobileMenu = document.getElementById("mobile-menu");
+    if (!mobileMenuButton || !mobileMenu) return;
+
+    mobileMenu.style.transform = isOpen ? "translateX(0)" : "translateX(100%)";
+    mobileMenuButton.setAttribute("aria-expanded", isOpen.toString());
+
+    const svg = mobileMenuButton.querySelector("svg");
+    if (svg) {
+      svg.innerHTML = isOpen ? menuIcons.open : menuIcons.closed;
+    }
+  }
+
+  const mobileMenuButton = document.getElementById("mobile-menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  if (mobileMenuButton && mobileMenu) {
+    let isMenuOpen = false;
+
+    mobileMenuButton.addEventListener("click", () => {
+      isMenuOpen = !isMenuOpen;
+      toggleMenu(isMenuOpen);
+    });
+
+    mobileMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => toggleMenu(false));
+    });
+  }
+</script>
+

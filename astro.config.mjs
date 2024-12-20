@@ -5,6 +5,7 @@ import tailwind from '@astrojs/tailwind';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://gilabrewing.com',
+  output: 'static',
   integrations: [tailwind()],
   build: {
     inlineStylesheets: 'auto'
@@ -12,9 +13,5 @@ export default defineConfig({
   image: {
     domains: ['gilabrewing.com'],
     remotePatterns: [{ protocol: 'https' }]
-  },
-  prefetch: {
-    prefetchAll: true,
-    defaultStrategy: 'hover'
   }
 });
