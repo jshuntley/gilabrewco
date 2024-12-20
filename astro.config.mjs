@@ -6,7 +6,11 @@ import tailwind from '@astrojs/tailwind';
 export default defineConfig({
   site: 'https://gilabrewing.com',
   output: 'static',
-  integrations: [tailwind()],
+  integrations: [
+    tailwind({
+      applyBaseStyles: false
+    })
+  ],
   build: {
     inlineStylesheets: 'auto'
   },

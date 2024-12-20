@@ -2,6 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import { ClientRouter, fade } from "astro:transitions";
 
 const { title, description, permalink, current = "" } = Astro.props;
 ---
@@ -16,22 +17,18 @@ const { title, description, permalink, current = "" } = Astro.props;
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Gila Brew Co." />
     <link rel="manifest" href="/site.webmanifest" />
+    <ClientRouter />
   </head>
   <body>
     <div class="layout">
-      <Header current={current} />
-      <main class="flex-1 w-full">
+      <Header current={current} transition:persist />
+      <main
+        class="flex-1 w-full"
+        transition:animate={fade({ duration: "0.5s" })}
+      >
         <slot />
       </main>
-      <Footer />
+      <Footer transition:persist />
     </div>
   </body>
 </html>
-
-<style>
-  .layout {
-    @apply flex flex-col min-h-screen
-           bg-gradient-to-b from-light-base to-light-soft
-           dark:from-dark-base dark:to-dark-soft;
-  }
-</style>

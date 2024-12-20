@@ -1,4 +1,5 @@
 ---
+// Import global styles once
 import "../styles/fonts.css";
 import "../styles/global.css";
 
@@ -44,6 +45,9 @@ const socialUrl = new URL(
 
 <!-- Theme handling script -->
 <script is:inline>
+  // Store theme state
+  let currentTheme = null;
+
   function applyTheme(theme) {
     document.documentElement.classList.toggle("dark", theme === "dark");
     localStorage.setItem("theme", theme);
@@ -76,6 +80,24 @@ const socialUrl = new URL(
       return !isDark;
     },
   };
+
+  // Handle theme persistence during transitions
+  function setTheme(document) {
+    const isDark =
+      localStorage.getItem("theme") === "dark" ||
+      (!localStorage.getItem("theme") &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.classList.toggle("dark", isDark);
+  }
+
+  // Set initial theme
+  setTheme(document);
+
+  // Handle theme during page transitions
+  document.addEventListener("astro:before-swap", (event) => {
+    // Apply theme to the new document before swap
+    setTheme(event.newDocument);
+  });
 </script>
 
 <style is:inline>
@@ -97,6 +119,17 @@ const socialUrl = new URL(
 </style>
 
 <script>
+  // Function to initialize theme toggle
+  function initThemeToggle() {
+    const toggle = document.getElementById("theme-toggle");
+    if (toggle) {
+      toggle.addEventListener("click", () => {
+        const isDark = window.themeToggle?.toggle() ?? false;
+        toggle.setAttribute("aria-checked", isDark.toString());
+      });
+    }
+  }
+
   // Add type declaration for window.themeToggle
   declare global {
     interface Window {
@@ -106,12 +139,11 @@ const socialUrl = new URL(
     }
   }
 
-  // Handle theme toggle clicks
-  const toggle = document.getElementById("theme-toggle");
-  if (toggle) {
-    toggle.addEventListener("click", () => {
-      const isDark = window.themeToggle?.toggle() ?? false;
-      toggle.setAttribute("aria-checked", isDark.toString());
-    });
-  }
+  // Initialize toggle on page load
+  initThemeToggle();
+
+  // Re-initialize toggle after page transitions
+  document.addEventListener("astro:after-swap", () => {
+    initThemeToggle();
+  });
 </script>
