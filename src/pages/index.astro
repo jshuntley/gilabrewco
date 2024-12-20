@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import type { Brew } from "../types/brew";
 import { getCollection } from "astro:content";
-import type { CollectionEntry } from "astro:content";
+import type { Brew, BrewEntry, BrewStatus } from "../types/brew";
+import { STATUS_GROUPS } from "../types/brew";
 import { Image } from "astro:assets";
 import heroImage from "../assets/images/brewery-hero.webp";
 
@@ -14,34 +14,38 @@ const PERMALINK = new URL(
   Astro.site?.href ?? "https://gilabrewing.com"
 ).href;
 
-// Status groupings with proper typing
-const STATUS_GROUPS = {
-  tapped: ["on tap", "kegged", "carbonating", "conditioning", "gone"],
-  brewing: ["fermenting", "soft crashing", "crashing", "secondary fermentation"],
-  upcoming: ["upcoming", "waiting for ingredients"]
-} as const;
+// Status groupings with proper type
+type StatusGroup = (typeof STATUS_GROUPS)[keyof typeof STATUS_GROUPS];
 
-type StatusGroup = typeof STATUS_GROUPS[keyof typeof STATUS_GROUPS][number];
+// Define section type configuration
+type SectionType = keyof typeof STATUS_GROUPS;
+type SectionConfig = {
+  title: string;
+  type: SectionType;
+  icon: "checklist" | "barrel" | "mug";
+  emptyText: string;
+  subText: string;
+};
 
 // Section configurations
-const SECTIONS = [
+const SECTIONS: SectionConfig[] = [
   { 
     title: "In the Works", 
-    type: "upcoming" as const,
+    type: "upcoming",
     icon: "checklist",
     emptyText: "No upcoming brews planned",
     subText: "Planning our next creation"
   },
   { 
     title: "In the Tank",
-    type: "brewing" as const,
+    type: "brewing",
     icon: "barrel",
     emptyText: "Nothing brewing at the moment",
     subText: "New batch coming soon"
   },
   { 
     title: "In the Keg",
-    type: "tapped" as const,
+    type: "tapped",
     icon: "mug",
     emptyText: "No beers currently on tap",
     subText: "Check back soon for new releases"
@@ -49,26 +53,30 @@ const SECTIONS = [
 ];
 
 // Get and process brews
-const allBrews: CollectionEntry<'brews'>[] = await getCollection("brews");
+const allBrews: BrewEntry[] = await getCollection("brews");
 const brews: Brew[] = allBrews.map((brew) => brew.data);
 
-// Helper function to sort and filter brews with correct typing
-const getFilteredBrews = (statusGroup: readonly string[]) => {
+// Helper function to sort and filter brews with corrected typing
+const getFilteredBrews = (statusGroup: StatusGroup) => {
+  const isBrewStatus = (status: unknown): status is BrewStatus => {
+    return (statusGroup as readonly string[]).includes(status as string);
+  };
+
   return brews
-    .filter((brew): brew is Brew => statusGroup.includes(brew.status))
+    .filter(brew => isBrewStatus(brew.status))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 2);
 };
 
-// Get brews for each section with type assertions
-const brewsByType = {
-  tapped: getFilteredBrews(STATUS_GROUPS.tapped as readonly string[]),
-  brewing: getFilteredBrews(STATUS_GROUPS.brewing as readonly string[]),
-  upcoming: getFilteredBrews(STATUS_GROUPS.upcoming as readonly string[])
+// Get brews for each section with proper typing
+const brewsByType: Record<SectionType, Brew[]> = {
+  tapped: getFilteredBrews(STATUS_GROUPS.tapped),
+  brewing: getFilteredBrews(STATUS_GROUPS.brewing),
+  upcoming: getFilteredBrews(STATUS_GROUPS.upcoming)
 };
 
-// Status styling
-const statusStyles = {
+// Status styling with proper typing
+const statusStyles: Record<BrewStatus, string> = {
   "on tap": "text-light-accent dark:text-dark-accent font-bold",
   kegged: "text-light-accent dark:text-dark-accent font-bold",
   carbonating: "text-light-accent dark:text-dark-accent font-bold",
@@ -80,7 +88,7 @@ const statusStyles = {
   "secondary fermentation": "text-light-accent dark:text-dark-accent font-bold",
   upcoming: "text-light-accent dark:text-dark-accent font-bold",
   "waiting for ingredients": "text-light-accent dark:text-dark-accent font-bold"
-} as const;
+};
 ---
 
 <BaseLayout title={TITLE} description={DESCRIPTION} permalink={PERMALINK}>
@@ -117,21 +125,21 @@ const statusStyles = {
       >
         <a
           href="/blog"
-          class="group relative w-full sm:w-32 px-6 sm:px-8 py-3 sm:py-4 bg-light-accent/90 dark:bg-dark-accent/90 text-light-base/90 dark:text-dark-base/90 rounded-lg font-sans font-semibold uppercase tracking-wider text-center text-sm sm:text-base overflow-hidden transition-all duration-300"
+          class="group relative w-full sm:w-32 px-6 sm:px-8 py-3 sm:py-4 bg-light-accent/90 dark:bg-dark-accent/90 text-light-base/90 dark:text-dark-base/90 rounded-lg font-sans font-semibold uppercase tracking-wider transition-all duration-300 hover:text-light-base dark:hover:text-dark-base text-center text-sm sm:text-base"
         >
-          <span class="relative z-[1] transition-colors duration-300 group-hover:text-light-base dark:group-hover:text-dark-base">
+          <span class="relative">
             Blog
+            <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-light-base dark:bg-dark-base transform scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100"></span>
           </span>
-          <div class="absolute inset-0 bg-gradient-to-r from-light-accent to-light-accent/80 dark:from-dark-accent dark:to-dark-accent/80 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300 ease-out"></div>
         </a>
         <a
           href="#about"
-          class="group relative w-full sm:w-32 px-6 sm:px-8 py-3 sm:py-4 text-white/90 rounded-lg font-sans font-semibold uppercase tracking-wider text-center text-sm sm:text-base overflow-hidden"
+          class="group relative w-full sm:w-32 px-6 sm:px-8 py-3 sm:py-4 bg-white/20 backdrop-blur-sm text-white/90 hover:text-white rounded-lg font-sans font-semibold uppercase tracking-wider transition-all duration-300 hover:bg-white/30 text-center text-sm sm:text-base"
         >
-          <span class="relative z-[1] transition-colors duration-300 group-hover:text-white">
+          <span class="relative">
             Beer
+            <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-white transform scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100"></span>
           </span>
-          <div class="absolute inset-0 bg-white/20 backdrop-blur-sm transition-[backdrop-filter,background-color] duration-300 ease-out group-hover:bg-white/30 group-hover:backdrop-blur-md"></div>
         </a>
       </div>
 
@@ -197,6 +205,12 @@ const statusStyles = {
     window.addEventListener("unload", () => {
       observer.disconnect();
     });
+
+    // Add this at the top of your existing script
+    const img = new Image();
+    img.src = '../assets/images/brewery-hero.webp';
+    img.onload = () => console.log('Hero image loaded successfully');
+    img.onerror = (e) => console.error('Hero image failed to load:', e);
   </script>
 
   <!-- Features Section -->
@@ -233,10 +247,10 @@ const statusStyles = {
               class="group relative p-[3px] bg-white dark:bg-dark-card rounded-xl shadow-md dark:shadow-white/5 
               transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:dark:shadow-white/10 
               hover:bg-light-soft/10 dark:hover:bg-dark-soft/10 backdrop-blur-sm overflow-hidden"
+              style="--light-accent: rgb(184, 149, 108); --dark-accent: rgb(184, 149, 108);"
             >
               <div 
-                class="absolute inset-0 rounded-xl bg-gradient-to-r from-light-accent/0 via-light-accent/20 to-light-accent/0 dark:from-dark-accent/0 dark:via-dark-accent/20 dark:to-dark-accent/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-[1]"
-                style="background: conic-gradient(from var(--angle), var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to))"
+                class="absolute inset-0 rounded-xl bg-[conic-gradient(from_var(--angle),var(--tw-gradient-stops))] from-light-accent/0 via-light-accent/20 to-light-accent/0 dark:from-dark-accent/0 dark:via-dark-accent/20 dark:to-dark-accent/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 group-hover:animate-[rotate_4s_linear_infinite] z-[1]"
               ></div>
               <div class="relative bg-white dark:bg-dark-card rounded-xl p-8 z-[2]">
                 <!-- Section Icons -->
@@ -330,7 +344,7 @@ const statusStyles = {
     @apply w-full h-full object-cover;
   }
 
-  /* Base animation styles */
+  /* Border animation styles */
   @property --angle {
     syntax: '<angle>';
     initial-value: 0deg;
@@ -347,32 +361,26 @@ const statusStyles = {
   @-moz-document url-prefix() {
     .group:hover .absolute {
       opacity: 1;
-      background: linear-gradient(var(--angle),
-        var(--tw-gradient-from) 0%,
-        var(--tw-gradient-via) 50%,
-        var(--tw-gradient-to) 100%
+      background: linear-gradient(90deg,
+        var(--light-accent) 0%,
+        transparent 50%,
+        var(--light-accent) 100%
       );
-      animation: firefoxRotate 4s linear infinite;
+      animation: firefoxGradient 8s linear infinite;
     }
 
-    @keyframes firefoxRotate {
-      from {
-        --angle: 0deg;
-      }
-      to {
-        --angle: 360deg;
-      }
+    @keyframes firefoxGradient {
+      0% { background-position: 200% 50%; }
+      100% { background-position: -200% 50%; }
     }
 
-    /* Force hardware acceleration in Firefox */
     .absolute {
-      transform: translateZ(0);
-      will-change: transform, opacity;
+      background-size: 200% 100% !important;
     }
   }
 
-  /* Fallback for browsers without @property support */
-  @supports not (background: paint(something)) {
+  /* Fallback for other browsers without @property support */
+  @supports not (background: paint(something)) and (not (-moz-appearance: none)) {
     .group:hover .absolute {
       opacity: 1;
       background: linear-gradient(90deg, 
@@ -380,6 +388,7 @@ const statusStyles = {
         var(--tw-gradient-via) 50%,
         var(--tw-gradient-to) 100%
       );
+      animation: none;
     }
   }
 
@@ -387,21 +396,6 @@ const statusStyles = {
   @-webkit-keyframes rotate {
     to {
       --angle: 360deg;
-    }
-  }
-
-  /* Add to your existing styles */
-  .group {
-    transform: translateZ(0);
-    backface-visibility: hidden;
-  }
-
-  @supports (backdrop-filter: blur(4px)) {
-    .backdrop-blur-sm {
-      backdrop-filter: blur(4px);
-    }
-    .backdrop-blur-md {
-      backdrop-filter: blur(8px);
     }
   }
 </style>

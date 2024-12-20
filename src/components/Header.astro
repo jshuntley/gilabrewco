@@ -50,10 +50,10 @@ const links = [
             <a
               href={href}
               class:list={[
-                "font-sans text-base tracking-wide transition-colors duration-200",
+                "font-sans text-base font-medium tracking-wide transition-colors duration-200",
                 isCurrentPage
-                  ? "text-light-accent dark:text-dark-accent font-[600] font-medium"
-                  : "text-light-text dark:text-dark-text hover:text-light-accent dark:hover:text-dark-accent font-[600] font-medium",
+                  ? "text-light-accent dark:text-dark-accent"
+                  : "text-light-text dark:text-dark-text hover:text-light-accent dark:hover:text-dark-accent",
               ]}
               aria-current={isCurrentPage ? "page" : undefined}
             >
@@ -130,7 +130,7 @@ const links = [
           <a
             href={href}
             class:list={[
-              "block px-3 py-4 text-lg border-b border-light-text/10 dark:border-dark-text/10 transition-colors duration-200 font-[600] font-medium",
+              "block px-3 py-4 text-lg font-medium border-b border-light-text/10 dark:border-dark-text/10 transition-colors duration-200",
               isCurrentPage
                 ? "text-light-accent dark:text-dark-accent"
                 : "text-light-text dark:text-dark-text hover:text-light-accent dark:hover:text-dark-accent",
@@ -200,12 +200,3 @@ const links = [
     }
   });
 </script>
-
-<style>
-  /* Firefox-specific font weight fix */
-  @-moz-document url-prefix() {
-    a {
-      font-weight: 600 !important;
-    }
-  }
-</style>
