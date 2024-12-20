@@ -36,18 +36,8 @@ const socialUrl = new URL(
 <meta property="og:description" content={description} />
 <meta property="og:image" content={socialUrl} />
 
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={permalink} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={socialUrl} />
-
 <!-- Theme handling script -->
 <script is:inline>
-  // Store theme state
-  let currentTheme = null;
-
   function applyTheme(theme) {
     document.documentElement.classList.toggle("dark", theme === "dark");
     localStorage.setItem("theme", theme);
@@ -81,42 +71,16 @@ const socialUrl = new URL(
     },
   };
 
-  // Handle theme persistence during transitions
-  function setTheme(document) {
-    const isDark =
-      localStorage.getItem("theme") === "dark" ||
-      (!localStorage.getItem("theme") &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches);
-    document.documentElement.classList.toggle("dark", isDark);
-  }
-
-  // Set initial theme
-  setTheme(document);
-
   // Handle theme during page transitions
   document.addEventListener("astro:before-swap", (event) => {
-    // Apply theme to the new document before swap
-    setTheme(event.newDocument);
+    try {
+      const isDark = document.documentElement.classList.contains("dark");
+      event.newDocument.documentElement.classList.toggle("dark", isDark);
+    } catch (error) {
+      console.error("Error applying theme during page transition:", error);
+    }
   });
 </script>
-
-<style is:inline>
-  :root {
-    --theme-transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  html {
-    transition: var(--theme-transition);
-  }
-
-  /* Force hardware acceleration */
-  body {
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-</style>
 
 <script>
   // Function to initialize theme toggle

@@ -24,7 +24,7 @@ const { title, description, permalink, current = "" } = Astro.props;
       <Header current={current} transition:persist />
       <main
         class="flex-1 w-full mt-[72px]"
-        transition:animate={fade({ duration: "1s" })}
+        transition:animate={fade({ duration: "0.3s" })}
       >
         <slot />
       </main>

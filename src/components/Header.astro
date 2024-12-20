@@ -4,10 +4,6 @@ import LogoImage from "../assets/images/logo.png";
 import ThemeToggle from "./ThemeToggle.astro";
 import MobileMenu from "./MobileMenu.astro";
 
-interface Props {
-  current?: string;
-}
-
 interface NavLink {
   text: string;
   href: string;
@@ -25,6 +21,7 @@ const links: NavLink[] = [
 
 <header
   class="fixed top-0 inset-x-0 h-[72px] z-50 bg-light-base dark:bg-dark-base border-b border-light-accent/10 dark:border-dark-accent/10"
+  style="transition: none !important; transform: translate3d(0,0,0); backface-visibility: hidden;"
 >
   <nav class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8">
     <div class="flex lg:flex-1">
@@ -128,21 +125,26 @@ const links: NavLink[] = [
 
 <script>
   function updateCurrentPage() {
-    const path = window.location.pathname;
-    const links = document.querySelectorAll<HTMLAnchorElement>("header nav a");
+    try {
+      const path = window.location.pathname;
+      const links =
+        document.querySelectorAll<HTMLAnchorElement>("header nav a");
 
-    links.forEach((link) => {
-      const href = link.getAttribute("href");
-      const isCurrentPage = href === path || (path === "/" && href === "/");
+      links.forEach((link) => {
+        const href = link.getAttribute("href");
+        const isCurrentPage = href === path || (path === "/" && href === "/");
 
-      if (href) {
-        link.classList.toggle("text-light-accent", isCurrentPage);
-        link.classList.toggle("dark:text-dark-accent", isCurrentPage);
-        link.classList.toggle("text-light-text", !isCurrentPage);
-        link.classList.toggle("dark:text-dark-text", !isCurrentPage);
-        link.setAttribute("aria-current", isCurrentPage ? "page" : "false");
-      }
-    });
+        if (href) {
+          link.classList.toggle("text-light-accent", isCurrentPage);
+          link.classList.toggle("dark:text-dark-accent", isCurrentPage);
+          link.classList.toggle("text-light-text", !isCurrentPage);
+          link.classList.toggle("dark:text-dark-text", !isCurrentPage);
+          link.setAttribute("aria-current", isCurrentPage ? "page" : "false");
+        }
+      });
+    } catch (error) {
+      console.error("Error updating current page:", error);
+    }
   }
 
   updateCurrentPage();
