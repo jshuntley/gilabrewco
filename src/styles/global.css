@@ -7,6 +7,7 @@
   --card-shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --from-color: #4A4B40;
   --via-color: #B8956C;
+  --theme-transition: color 0.3s ease;
 }
 
 :root[class="dark"] {
@@ -22,6 +23,12 @@
 @layer base {
   body {
     @apply bg-light-base text-light-text transition-colors duration-300 antialiased dark:bg-dark-base dark:text-dark-text;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -211,4 +218,18 @@
     -moz-backface-visibility: hidden;
     will-change: transform;
   }
+}
+
+/* Fix for Chrome/Safari header transitions */
+header {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000;
+  -webkit-perspective: 1000;
+}
+
+html {
+  transition: var(--theme-transition);
 }

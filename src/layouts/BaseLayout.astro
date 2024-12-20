@@ -20,11 +20,11 @@ const { title, description, permalink, current = "" } = Astro.props;
     <ClientRouter />
   </head>
   <body>
-    <div class="layout">
+    <div class="min-h-screen flex flex-col">
       <Header current={current} transition:persist />
       <main
-        class="flex-1 w-full"
-        transition:animate={fade({ duration: "0.5s" })}
+        class="flex-1 w-full mt-[72px]"
+        transition:animate={fade({ duration: "1s" })}
       >
         <slot />
       </main>
