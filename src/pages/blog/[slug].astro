@@ -10,11 +10,11 @@ export async function getStaticPaths() {
   }));
 }
 
-type Props = {
+interface Props {
   post: CollectionEntry<"blog">;
-};
+}
 
-const { post } = Astro.props;
+const { post } = Astro.props as Props;
 const { Content } = await post.render();
 const permalink = new URL(Astro.url.pathname, Astro.site).href;
 ---
