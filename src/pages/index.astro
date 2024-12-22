@@ -94,36 +94,38 @@ const statusStyles: Record<BrewStatus, string> = {
 
 <BaseLayout title={TITLE} description={DESCRIPTION} permalink={PERMALINK}>
   <!-- Hero Section -->
-  <div class="relative h-[calc(100vh-72px)]">
-    <div class="absolute inset-0 overflow-hidden">
-      <Image
-        src={heroImage}
-        alt="Gila Brewing Co. brewery"
-        class="w-full h-full object-cover"
-        loading="eager"
-        quality="max"
-        format="webp"
-      />
-      <!-- Gradient Overlays -->
-      <div class="absolute inset-0 bg-black opacity-30 dark:opacity-50 transition-opacity duration-300"></div>
-      <div class="absolute inset-0 bg-gradient-to-b from-light-base/30 to-transparent dark:from-black/60 dark:to-transparent transition-colors duration-300"></div>
+  <div class="relative h-[calc(100svh-72px)] overflow-hidden">
+    <div class="absolute inset-0">
+      <div class="relative w-full h-full">
+        <Image
+          src={heroImage}
+          alt="Gila Brewing Co. brewery"
+          class="w-full h-full object-cover"
+          loading="eager"
+          quality="max"
+          format="webp"
+        />
+        <!-- Gradient Overlays -->
+        <div class="absolute inset-0 bg-black opacity-30 dark:opacity-50 transition-opacity duration-300"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-light-base/30 to-transparent dark:from-black/60 dark:to-transparent transition-colors duration-300"></div>
+      </div>
     </div>
-    
-    <!-- Hero Content -->
+
+    <!-- Hero Content Container -->
     <div class="relative h-full flex flex-col">
-      <div class="flex-1 flex flex-col justify-center items-center text-center px-4">
+      <div class="flex-1 flex flex-col justify-center items-center text-center px-4 sm:px-6">
         <h1
-          class="text-[clamp(2.5rem,6vw,6rem)] font-bold text-white mb-4 sm:mb-6 opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards]"
+          class="text-[clamp(2rem,8vw,6rem)] font-bold text-white mb-3 sm:mb-6 opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards] leading-tight"
         >
           Gila Brewing Co.
         </h1>
         <p
-          class="text-[clamp(1rem,2.5vw,2rem)] text-white/90 max-w-3xl mx-auto mb-8 sm:mb-12 opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards_0.2s]"
+          class="text-[clamp(0.875rem,4vw,2rem)] text-white/90 max-w-3xl mx-auto mb-6 sm:mb-12 opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards_0.2s] leading-relaxed"
         >
           A homebrewing duo who love beer and want to share their experiences
         </p>
         <div
-          class="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards_0.4s]"
+          class="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center w-full sm:w-auto opacity-0 translate-y-5 animate-[fadeIn_0.8s_ease_forwards_0.4s]"
         >
           <a
             href="/blog"
@@ -143,7 +145,7 @@ const statusStyles: Record<BrewStatus, string> = {
       </div>
 
       <!-- Scroll Indicator -->
-      <div class="flex justify-center pb-8">
+      <div class="flex justify-center pb-4 sm:pb-8">
         <a
           href="#about"
           class="animate-bounce opacity-80 hover:opacity-100 transition-opacity duration-200"
@@ -168,9 +170,9 @@ const statusStyles: Record<BrewStatus, string> = {
   </div>
 
   <!-- Features Section -->
-  <div class="py-16 sm:py-24 bg-light-base dark:bg-dark-base" id="about">
+  <div class="relative z-10 py-12 sm:py-24 bg-light-base dark:bg-dark-base" id="about">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12 sm:mb-20">
+      <div class="text-center mb-8 sm:mb-20">
         <h2 
           style="
             background: linear-gradient(to right, var(--from-color), var(--via-color), var(--from-color));
@@ -182,16 +184,16 @@ const statusStyles: Record<BrewStatus, string> = {
             line-height: 1.4;
             padding-bottom: 0.2em;
           "
-          class="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4"
+          class="text-2xl sm:text-4xl font-bold mb-2 sm:mb-4"
         >
           What's Brewing
         </h2>
-        <p class="text-lg sm:text-xl text-light-text/80 dark:text-dark-text/80 max-w-3xl mx-auto">
+        <p class="text-base sm:text-xl text-light-text/80 dark:text-dark-text/80 max-w-3xl mx-auto">
           From concept to keg, here's what's happening in our brewhouse
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-12">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-12">
         {SECTIONS.map((section, sectionIndex) => (
           <div
             class="opacity-0 animate-[fadeIn_0.5s_ease_forwards]"
@@ -206,9 +208,9 @@ const statusStyles: Record<BrewStatus, string> = {
               <div 
                 class="absolute inset-0 rounded-xl bg-[conic-gradient(from_var(--angle),var(--tw-gradient-stops))] from-light-accent/0 via-light-accent/20 to-light-accent/0 dark:from-dark-accent/0 dark:via-dark-accent/20 dark:to-dark-accent/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 group-hover:animate-[rotate_4s_linear_infinite] z-[1]"
               ></div>
-              <div class="relative bg-white dark:bg-dark-card rounded-xl p-8 z-[2]">
+              <div class="relative bg-white dark:bg-dark-card rounded-xl p-4 sm:p-8 z-[2]">
                 <!-- Section Icons -->
-                <div class="mb-6">
+                <div class="mb-4 sm:mb-6">
                   {section.icon === "checklist" && (
                     <svg class="w-12 h-12 text-light-accent dark:text-dark-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
@@ -230,7 +232,7 @@ const statusStyles: Record<BrewStatus, string> = {
                   )}
                 </div>
 
-                <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mb-4 pb-2 border-b-2 border-light-accent/30 dark:border-dark-accent/30">
+                <h3 class="text-xl sm:text-2xl font-bold text-light-text dark:text-dark-text mb-3 sm:mb-4 pb-2 border-b-2 border-light-accent/30 dark:border-dark-accent/30">
                   {section.title}
                 </h3>
 
@@ -291,6 +293,15 @@ const statusStyles: Record<BrewStatus, string> = {
 </BaseLayout>
 
 <style>
+  /* Force hardware acceleration and prevent scaling */
+  .fixed, .absolute {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
   .hero-image {
     @apply w-full h-full object-cover;
   }
@@ -342,5 +353,28 @@ const statusStyles: Record<BrewStatus, string> = {
     to {
       --angle: 360deg;
     }
+  }
+
+  /* Prevent any unwanted scaling or movement */
+  .fixed {
+    transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0,0,0);
+  }
+
+  /* Smooth scaling for mobile browsers */
+  @media (hover: none) and (pointer: coarse) {
+    .scale-[1.1] {
+      transform: scale(1.1);
+      transition: transform 0.7s ease-out;
+    }
+  }
+
+  /* Remove all transform properties from the hero section */
+  .absolute img {
+    transform: none !important;
+    -webkit-transform: none !important;
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+    will-change: auto !important;
   }
 </style>
