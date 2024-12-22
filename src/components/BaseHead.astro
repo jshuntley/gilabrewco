@@ -3,7 +3,7 @@
 import "../styles/fonts.css";
 import "../styles/global.css";
 
-interface Props {
+export interface Props {
   title: string;
   description: string;
   permalink: string;
@@ -70,16 +70,6 @@ const socialUrl = new URL(
       return !isDark;
     },
   };
-
-  // Handle theme during page transitions
-  document.addEventListener("astro:before-swap", (event) => {
-    try {
-      const isDark = document.documentElement.classList.contains("dark");
-      event.newDocument.documentElement.classList.toggle("dark", isDark);
-    } catch (error) {
-      console.error("Error applying theme during page transition:", error);
-    }
-  });
 </script>
 
 <script>
