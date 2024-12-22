@@ -1,12 +1,13 @@
 import type { APIRoute } from 'astro';
 
-// Add type for Brewfather API response
 interface BrewfatherReading {
-  timestamp: string;
+  type: string;
+  id: string;
   temp: number;
-  gravity: number;
   comment?: string;
-  device?: string;
+  time: number;
+  sg: number;
+  pressure: number;
 }
 
 export const prerender = false;
@@ -18,12 +19,12 @@ export const GET: APIRoute = async ({ params, request }) => {
   const userId = import.meta.env.BREWFATHER_USER_ID;
   const apiKey = import.meta.env.BREWFATHER_API_KEY;
 
+  // Safe logging that won't break if env vars are undefined
   console.log("Environment check:", {
-    hasUserId: !!userId,
-    hasApiKey: !!apiKey,
-    userIdLength: userId?.length,
-    apiKeyLength: apiKey?.length,
-    envKeys: Object.keys(import.meta.env),
+    hasUserId: Boolean(userId),
+    hasApiKey: Boolean(apiKey),
+    userIdLength: userId?.length || 0,
+    apiKeyLength: apiKey?.length || 0,
   });
 
   // Get the batch ID from the request URL
@@ -33,13 +34,24 @@ export const GET: APIRoute = async ({ params, request }) => {
   console.log("\nRequest details:", {
     url: request.url,
     method: request.method,
-    headers: Object.fromEntries(request.headers.entries()),
     searchParams: url.searchParams.toString(),
     batchId,
   });
 
+  // Early return if missing required data
+  if (!userId || !apiKey) {
+    console.error('Missing Brewfather credentials');
+    return new Response(JSON.stringify({ 
+      error: 'Brewfather credentials not configured',
+      details: 'Environment variables are missing'
+    }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   if (!batchId || batchId === 'null') {
-    console.error('\nError: No batch ID provided or batch ID is null');
+    console.error('No batch ID provided or batch ID is null');
     return new Response(JSON.stringify({ error: 'Valid Brewfather batch ID is required' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
@@ -47,24 +59,19 @@ export const GET: APIRoute = async ({ params, request }) => {
   }
 
   try {
-    // Construct the Brewfather API URL with the correct endpoint
+    // Construct the Brewfather API URL
     const brewfatherUrl = new URL(`https://api.brewfather.app/v2/batches/${batchId}/readings`);
     
-    console.log("\n=== Brewfather API Request Details ===");
-    console.log("Target URL:", brewfatherUrl.toString());
-    
-    // Create base64 encoded auth string
+    // Create base64 encoded auth string - only if we have both credentials
     const authString = `${userId}:${apiKey}`;
     const auth = btoa(authString);
     
     console.log("\nAuth details:", {
       format: "Basic base64(userId:apiKey)",
-      userIdPreview: `${userId.slice(0, 4)}...`,
-      authHeaderPreview: `Basic ${auth.slice(0, 10)}...${auth.slice(-10)}`,
+      userIdPreview: userId ? `${userId.slice(0, 4)}...` : 'missing',
+      authHeaderPreview: auth ? `Basic ${auth.slice(0, 10)}...${auth.slice(-10)}` : 'missing'
     });
 
-    console.log("\nSending request to Brewfather...");
-    
     const response = await fetch(brewfatherUrl.toString(), {
       method: 'GET',
       headers: {
@@ -75,15 +82,14 @@ export const GET: APIRoute = async ({ params, request }) => {
 
     console.log("\n=== Brewfather API Response ===");
     console.log("Status:", response.status, response.statusText);
-    console.log("Headers:", Object.fromEntries(response.headers.entries()));
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.log("Error response body:", errorText);
-      throw new Error(`Brewfather API returned ${response.status}: ${response.statusText}`);
+      console.error('Brewfather error:', errorText);
+      throw new Error(`Failed to fetch Brewfather data: ${response.statusText}`);
     }
 
-    const rawData = (await response.json()) as BrewfatherReading[];
+    const rawData = await response.json() as BrewfatherReading[];
     
     if (!Array.isArray(rawData)) {
       throw new Error('Unexpected data format from Brewfather API');
@@ -91,7 +97,6 @@ export const GET: APIRoute = async ({ params, request }) => {
 
     console.log("Raw data from Brewfather:", rawData);
 
-    // Return the raw data directly
     return new Response(JSON.stringify(rawData), {
       status: 200,
       headers: {
