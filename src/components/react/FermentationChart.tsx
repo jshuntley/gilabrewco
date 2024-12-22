@@ -55,38 +55,29 @@ export default function FermentationChart({ brewfatherId }: Props) {
   useEffect(() => {
     async function fetchData() {
       if (!brewfatherId) {
-        console.log("No brewfatherId provided");
         setError("No Brewfather ID provided");
         return;
       }
 
-      console.log("Fetching data for brewfatherId:", brewfatherId);
-      const apiUrl = new URL("/api/brewfather", window.location.href);
-      apiUrl.searchParams.set("batchId", brewfatherId);
-
       try {
+        const apiUrl = new URL("/api/brewfather", window.location.href);
+        apiUrl.searchParams.set("batchId", brewfatherId);
+
         const response = await fetch(apiUrl);
-        const rawData = await response.json();
+        const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(rawData.error || response.statusText);
+          throw new Error(data.error || data.details || response.statusText);
         }
 
         // Sort readings by timestamp
-        const sortedReadings = rawData.sort((a: BrewfatherReading, b: BrewfatherReading) => 
-          new Date(a.time).getTime() - new Date(b.time).getTime()
+        const sortedReadings = data.sort((a: BrewfatherReading, b: BrewfatherReading) => 
+          a.time - b.time
         );
-
-        console.log("Received readings:", {
-          count: sortedReadings.length,
-          first: sortedReadings[0],
-          last: sortedReadings[sortedReadings.length - 1]
-        });
 
         setReadings(sortedReadings);
       } catch (e) {
         const errorMessage = e instanceof Error ? e.message : "Unknown error occurred";
-        console.error("Chart Error:", errorMessage);
         setError(errorMessage);
       }
     }
