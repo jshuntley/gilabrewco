@@ -91,15 +91,8 @@ export const GET: APIRoute = async ({ params, request }) => {
 
     console.log("Raw data from Brewfather:", rawData);
 
-    const processedData = {
-      timestamps: rawData.map((m) => new Date(m.timestamp).toLocaleString()),
-      temperature: rawData.map((m) => m.temp),
-      gravity: rawData.map((m) => m.gravity),
-    };
-
-    console.log("Processed data:", processedData);
-
-    return new Response(JSON.stringify(processedData), {
+    // Return the raw data directly
+    return new Response(JSON.stringify(rawData), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
