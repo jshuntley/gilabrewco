@@ -1,10 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
-import type { Brew, BrewEntry, BrewStatus } from "../types/brew";
+import type { Brew, BrewStatus, BrewsData } from "../types/brew";
 import { STATUS_GROUPS } from "../types/brew";
 import { Image } from "astro:assets";
 import heroImage from "../assets/images/brewery-hero.webp";
+import FermentationChart from "../components/react/FermentationChart";
+import { getAllBrews } from "../utils/brews";
 
 // Constants
 const TITLE = "Gila Brewing Co.";
@@ -34,7 +35,7 @@ const SECTIONS: SectionConfig[] = [
     type: "upcoming",
     icon: "checklist",
     emptyText: "No upcoming brews planned",
-    subText: "Planning our next creation"
+    subText: "Creating something new"
   },
   { 
     title: "In the Tank",
@@ -52,9 +53,8 @@ const SECTIONS: SectionConfig[] = [
   }
 ];
 
-// Get and process brews
-const allBrews: BrewEntry[] = await getCollection("brews");
-const brews: Brew[] = allBrews.map((brew) => brew.data);
+// Get all brews
+const brews = await getAllBrews();
 
 // Helper function to sort and filter brews with corrected typing
 const getFilteredBrews = (statusGroup: StatusGroup) => {
@@ -270,6 +270,17 @@ const statusStyles: Record<BrewStatus, string> = {
                             {brew.details}
                           </span>
                         </div>
+                        {brew.brewfatherId && brew.status === "fermenting" && (
+                          <div class="mt-4">
+                            <h5 class="text-sm font-medium mb-2">Fermentation Progress</h5>
+                            {typeof brew.brewfatherId === "string" && brew.brewfatherId.trim() && (
+                              <FermentationChart 
+                                brewfatherId={brew.brewfatherId} 
+                                client:load
+                              />
+                            )}
+                          </div>
+                        )}
                       </div>
                     ))
                   ) : (

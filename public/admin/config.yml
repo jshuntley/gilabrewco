@@ -52,8 +52,22 @@ collections:
     label: "Brews"
     folder: "src/content/brews"
     create: true
-    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    identifier_field: "id"
+    slug: "{{id}}"
+    summary: "{{name}} - {{style}}"
     fields:
+      - {
+          label: "ID",
+          name: "id",
+          widget: "string",
+          pattern:
+            [
+              "^[a-z0-9-]+$",
+              "Must be lowercase letters, numbers, and hyphens only",
+            ],
+        }
       - { label: "Name", name: "name", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Style", name: "style", widget: "string" }
@@ -87,9 +101,10 @@ collections:
         }
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Details", name: "details", widget: "string" }
+      - { label: "Notes", name: "notes", widget: "text", required: false }
       - {
-          label: "Tasting Notes",
-          name: "notes",
-          widget: "text",
+          label: "Brewfather ID",
+          name: "brewfatherId",
+          widget: "string",
           required: false,
         }

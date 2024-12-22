@@ -1,5 +1,3 @@
-import type { CollectionEntry } from "astro:content";
-
 // Status groupings
 export const STATUS_GROUPS = {
   tapped: ["on tap", "kegged", "carbonating", "conditioning", "gone"],
@@ -22,6 +20,9 @@ export interface Brew {
   date: string;
   details: string;
   notes?: string;
+  brewfatherId?: string;
 }
 
-export type BrewEntry = CollectionEntry<'brews'>; 
+export type BrewsData = {
+  [key: string]: Brew;
+}; 

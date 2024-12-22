@@ -1,6 +1,6 @@
 # build output
 dist/
-.astro/
+.output/
 
 # dependencies
 node_modules/
@@ -18,8 +18,5 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
-# IDE specific files
-.vscode/
-.idea/
-*.swp
-*.swo
+# Local Netlify folder
+.netlify

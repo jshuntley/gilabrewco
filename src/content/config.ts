@@ -34,7 +34,13 @@ const brewsCollection = defineCollection({
     ]),
     date: z.coerce.date().or(z.string()),
     details: z.string(),
-    notes: z.string().optional()
+    notes: z.string().optional(),
+    brewfatherId: z.string().trim().min(1, { message: "Brewfather ID is required" }).optional(),
+    fermentationData: z.object({
+      temperature: z.array(z.number()).optional(),
+      gravity: z.array(z.number()).optional(),
+      timestamps: z.array(z.string()).optional(),
+    }).optional()
   })
 });
 

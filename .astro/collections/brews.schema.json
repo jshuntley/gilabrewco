@@ -1,0 +1,112 @@
+{
+  "$ref": "#/definitions/brews",
+  "definitions": {
+    "brews": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "style": {
+          "type": "string"
+        },
+        "abv": {
+          "type": "number"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "upcoming",
+            "waiting for ingredients",
+            "fermenting",
+            "soft crashing",
+            "crashing",
+            "secondary fermentation",
+            "conditioning",
+            "carbonating",
+            "kegged",
+            "on tap",
+            "gone"
+          ]
+        },
+        "date": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "integer",
+                  "format": "unix-time"
+                }
+              ]
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "details": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "brewfatherId": {
+          "type": "string",
+          "minLength": 1,
+          "errorMessage": {
+            "minLength": "Brewfather ID is required"
+          }
+        },
+        "fermentationData": {
+          "type": "object",
+          "properties": {
+            "temperature": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            "gravity": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            "timestamps": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "description",
+        "style",
+        "abv",
+        "status",
+        "date",
+        "details"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
