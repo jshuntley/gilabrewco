@@ -167,8 +167,8 @@ export default function FermentationChart({ brewfatherId }: Props) {
                 drawOnChartArea: false,
               },
               ticks: {
-                callback: function(value) {
-                  return value.toFixed(3);
+                callback: function(value: number | string): string {
+                  return typeof value === 'number' ? value.toFixed(3) : String(value);
                 }
               }
             },
@@ -176,7 +176,7 @@ export default function FermentationChart({ brewfatherId }: Props) {
           plugins: {
             tooltip: {
               callbacks: {
-                label: function(context) {
+                label: function(context: { dataset: { label?: string, yAxisID?: string }, parsed: { y: number | null } }): string {
                   let label = context.dataset.label || '';
                   if (label) {
                     label += ': ';
