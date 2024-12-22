@@ -20,22 +20,19 @@ const brewsCollection = defineCollection({
     style: z.string(),
     abv: z.number(),
     status: z.enum([
-      // Upcoming phase
       'upcoming',
       'waiting for ingredients',
-      // Brewing phases
       'fermenting',
       'soft crashing',
       'crashing',
       'secondary fermentation',
-      // Conditioning phases
       'conditioning',
       'carbonating',
       'kegged',
       'on tap',
       'gone'
     ]),
-    date: z.string(),
+    date: z.coerce.date().or(z.string()),
     details: z.string(),
     notes: z.string().optional()
   })
