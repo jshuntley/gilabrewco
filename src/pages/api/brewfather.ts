@@ -13,8 +13,8 @@ interface BrewfatherReading {
 export const prerender = false;
 
 export const GET: APIRoute = async ({ params, request }) => {
-  const userId = import.meta.env.BREWFATHER_USER_ID;
-  const apiKey = import.meta.env.BREWFATHER_API_KEY;
+  const userId = import.meta.env.PUBLIC_BREWFATHER_USER_ID;
+  const apiKey = import.meta.env.PUBLIC_BREWFATHER_API_KEY;
 
   const url = new URL(request.url);
   const batchId = url.searchParams.get('batchId');
