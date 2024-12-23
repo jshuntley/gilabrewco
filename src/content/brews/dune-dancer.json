@@ -1,12 +1,12 @@
 {
-  "id": "dune-dancer",
-  "name": "Dune Dancer",
-  "description": "A hazy IPA with lots of citrus and pine",
-  "style": "Hazy IPA",
-  "abv": 7.1,
-  "status": "fermenting",
-  "date": "2024-03-20T00:00:00.000Z",
+  "notes": null,
   "details": "Flagship IPA",
+  "name": "Dune Dancer",
+  "date": "2024-03-20T00:00:00.000Z",
+  "style": "Hazy IPA",
+  "status": "fermenting",
+  "abv": 7.1,
   "brewfatherId": "fUh9XQkmKlgFw7mloyzMieUs76Uvpb",
-  "notes": null
+  "id": "dune-dancer",
+  "description": "A hazy IPA made with Anchovy and Galaxy hops."
 }
