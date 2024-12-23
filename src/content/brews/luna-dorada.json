@@ -1,12 +1,12 @@
 {
-  "id": "luna-dorada",
-  "name": "Luna Dorada",
-  "description": "A saison style beer fermented with Omega Yeast Saisonstein",
-  "style": "Saison",
-  "abv": 8.5,
-  "status": "on tap",
-  "date": "2024-12-01T00:00:00.000Z",
-  "details": "Pouring strong!",
   "notes": "Had some equipment issues with this one, so it came in a bit under-fermented. We're still proud of it!",
-  "brewfatherId": null
+  "details": "Pouring strong!",
+  "name": "Luna Dorada",
+  "date": "2024-12-01T00:00:00.000Z",
+  "style": "Saison",
+  "status": "gone",
+  "abv": 8.5,
+  "brewfatherId": null,
+  "id": "luna-dorada",
+  "description": "A saison style beer fermented with Omega Yeast Saisonstein"
 }
