@@ -273,7 +273,7 @@ const statusStyles: Record<BrewStatus, string> = {
                         {brew.brewfatherId && brew.status === "fermenting" && (
                           <div class="mt-4">
                             <h5 class="text-sm font-medium mb-2">Progress</h5>
-                            <div class="border border-blue-500 p-4">
+                            <div class="p-4">
                               {typeof brew.brewfatherId === "string" && brew.brewfatherId.trim() && (
                                 <FermentationChart 
                                   brewfatherId={brew.brewfatherId} 
