@@ -1,6 +1,6 @@
 // Status groupings
 export const STATUS_GROUPS = {
-  tapped: ['on tap', 'kegged'] as const,
+  tapped: ['on tap', 'kegged', 'gone'] as const,
   brewing: [
     'fermenting',
     'dry hopping',
