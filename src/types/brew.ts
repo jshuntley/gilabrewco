@@ -1,14 +1,34 @@
 // Status groupings
 export const STATUS_GROUPS = {
-  tapped: ["on tap", "kegged", "carbonating", "conditioning", "gone"],
-  brewing: ["fermenting", "soft crashing", "crashing", "secondary fermentation"],
-  upcoming: ["upcoming", "waiting for ingredients"]
+  tapped: ['on tap', 'kegged'] as const,
+  brewing: [
+    'fermenting',
+    'dry hopping',
+    'diacetyl rest',
+    'soft crashing',
+    'crashing',
+    'secondary fermentation',
+    'conditioning',
+    'carbonating'
+  ] as const,
+  upcoming: ['upcoming', 'waiting for ingredients'] as const,
 } as const;
 
 // Create a union type of all possible status values
-export type BrewStatus = (typeof STATUS_GROUPS.tapped)[number] | 
-                        (typeof STATUS_GROUPS.brewing)[number] | 
-                        (typeof STATUS_GROUPS.upcoming)[number];
+export type BrewStatus = 
+  | 'upcoming'
+  | 'waiting for ingredients'
+  | 'fermenting'
+  | 'dry hopping'
+  | 'diacetyl rest'
+  | 'soft crashing'
+  | 'crashing'
+  | 'secondary fermentation'
+  | 'conditioning'
+  | 'carbonating'
+  | 'kegged'
+  | 'on tap'
+  | 'gone';
 
 // Define the Brew interface
 export interface Brew {
