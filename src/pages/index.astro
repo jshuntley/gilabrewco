@@ -272,7 +272,11 @@ const statusStyles: Record<BrewStatus, string> = {
                             {brew.details}
                           </span>
                         </div>
-                        {brew.brewfatherId && brew.status === "fermenting" && (
+                        {brew.brewfatherId && (
+                          brew.status === "fermenting" || 
+                          brew.status === "dry hopping" || 
+                          brew.status === "diacetyl rest"
+                        ) && (
                           <div class="mt-4">
                             <h5 class="text-sm font-medium mb-2">Progress</h5>
                             <div class="p-4">
