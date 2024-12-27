@@ -84,6 +84,8 @@ const statusStyles: Record<BrewStatus, string> = {
   conditioning: baseStyle,
   gone: "text-light-accent/60 dark:text-dark-accent/60 font-bold",
   fermenting: baseStyle,
+  "dry hopping": baseStyle,
+  "diacetyl rest": baseStyle,
   "soft crashing": baseStyle,
   crashing: baseStyle,
   "secondary fermentation": baseStyle,
@@ -270,7 +272,11 @@ const statusStyles: Record<BrewStatus, string> = {
                             {brew.details}
                           </span>
                         </div>
-                        {brew.brewfatherId && brew.status === "fermenting" && (
+                        {brew.brewfatherId && (
+                          brew.status === "fermenting" || 
+                          brew.status === "dry hopping" || 
+                          brew.status === "diacetyl rest"
+                        ) && (
                           <div class="mt-4">
                             <h5 class="text-sm font-medium mb-2">Progress</h5>
                             <div class="p-4">
