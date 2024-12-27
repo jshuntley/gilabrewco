@@ -1,7 +1,7 @@
 // Status groupings
 export const STATUS_GROUPS = {
   tapped: ["on tap", "kegged", "carbonating", "conditioning", "gone"],
-  brewing: ["fermenting", "soft crashing", "crashing", "secondary fermentation"],
+  brewing: ["fermenting", "dry hopping", "soft crashing", "crashing", "secondary fermentation"],
   upcoming: ["upcoming", "waiting for ingredients"]
 } as const;
 

@@ -23,6 +23,7 @@ const brewsCollection = defineCollection({
       'upcoming',
       'waiting for ingredients',
       'fermenting',
+      'dry hopping',
       'soft crashing',
       'crashing',
       'secondary fermentation',
