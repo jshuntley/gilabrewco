@@ -48,18 +48,6 @@ const socialUrl = new URL(
     document.documentElement.classList.toggle("dark", theme === "dark");
   }
 
-  // Run on initial page load
-  initTheme();
-
-  // Handle system theme changes
-  window
-    .matchMedia("(prefers-color-scheme: dark)")
-    .addEventListener("change", (e) => {
-      if (!localStorage.getItem("theme")) {
-        document.documentElement.classList.toggle("dark", e.matches);
-      }
-    });
-
   // Make theme functions available globally
   window.themeToggle = {
     toggle: () => {
@@ -75,13 +63,20 @@ const socialUrl = new URL(
   function initThemeToggle() {
     const toggle = document.getElementById("theme-toggle");
     if (toggle) {
-      toggle.setAttribute(
+      // Clean up old event listeners
+      const newToggle = toggle.cloneNode(true);
+      toggle.parentNode?.replaceChild(newToggle, toggle);
+
+      // Set initial state
+      newToggle.setAttribute(
         "aria-checked",
         document.documentElement.classList.contains("dark").toString()
       );
-      toggle.addEventListener("click", () => {
+
+      // Add new event listener
+      newToggle.addEventListener("click", () => {
         const isDark = window.themeToggle?.toggle() ?? false;
-        toggle.setAttribute("aria-checked", isDark.toString());
+        newToggle.setAttribute("aria-checked", isDark.toString());
       });
     }
   }
@@ -89,18 +84,27 @@ const socialUrl = new URL(
   // Make initThemeToggle available globally
   window.initThemeToggle = initThemeToggle;
 
-  // Run on initial load
-  initThemeToggle();
-</script>
+  // Run on initial page load
+  document.addEventListener("DOMContentLoaded", () => {
+    initTheme();
+    initThemeToggle();
+  });
 
-<!-- Handle theme during view transitions -->
-<script>
+  // Handle system theme changes
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", (e) => {
+      if (!localStorage.getItem("theme")) {
+        document.documentElement.classList.toggle("dark", e.matches);
+        initThemeToggle();
+      }
+    });
+
+  // Handle view transitions
   document.addEventListener("astro:after-swap", () => {
-    const theme = localStorage.getItem("theme");
-    if (theme) {
-      document.documentElement.classList.toggle("dark", theme === "dark");
-    }
-    // Re-initialize theme toggle after page transition
-    window.initThemeToggle?.();
+    requestAnimationFrame(() => {
+      initTheme();
+      initThemeToggle();
+    });
   });
 </script>
