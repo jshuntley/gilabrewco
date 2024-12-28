@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
 import { Image } from "astro:assets";
+import Comments from "../components/Comments.astro";
 
 const { content } = Astro.props;
 const formattedDate = new Date(content.publishDate).toLocaleDateString(
@@ -177,6 +178,8 @@ const formattedDate = new Date(content.publishDate).toLocaleDateString(
       </a>
     </nav>
   </div>
+
+  <Comments title={content.title} />
 </BaseLayout>
 
 <style>
