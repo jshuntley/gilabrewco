@@ -45,7 +45,6 @@ const socialUrl = new URL(
       (window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light");
-
     document.documentElement.classList.toggle("dark", theme === "dark");
   }
 
@@ -96,26 +95,12 @@ const socialUrl = new URL(
 
 <!-- Handle theme during view transitions -->
 <script>
-  function initThemeToggle() {
-    const toggle = document.getElementById("theme-toggle");
-    if (toggle) {
-      toggle.setAttribute(
-        "aria-checked",
-        document.documentElement.classList.contains("dark").toString()
-      );
-      toggle.addEventListener("click", () => {
-        const isDark = window.themeToggle?.toggle() ?? false;
-        toggle.setAttribute("aria-checked", isDark.toString());
-      });
-    }
-  }
-
   document.addEventListener("astro:after-swap", () => {
     const theme = localStorage.getItem("theme");
     if (theme) {
       document.documentElement.classList.toggle("dark", theme === "dark");
     }
     // Re-initialize theme toggle after page transition
-    initThemeToggle();
+    window.initThemeToggle?.();
   });
 </script>
