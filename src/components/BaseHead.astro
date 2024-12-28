@@ -38,27 +38,26 @@ const socialUrl = new URL(
 
 <!-- Theme handling script -->
 <script is:inline>
-  function applyTheme(theme) {
+  // Initialize theme on page load
+  function initTheme() {
+    const theme =
+      localStorage.getItem("theme") ||
+      (window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light");
+
     document.documentElement.classList.toggle("dark", theme === "dark");
-    localStorage.setItem("theme", theme);
   }
 
-  // Get initial theme
-  const theme =
-    localStorage.getItem("theme") ||
-    (window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light");
-
-  // Apply theme immediately
-  applyTheme(theme);
+  // Run on initial page load
+  initTheme();
 
   // Handle system theme changes
   window
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", (e) => {
       if (!localStorage.getItem("theme")) {
-        applyTheme(e.matches ? "dark" : "light");
+        document.documentElement.classList.toggle("dark", e.matches);
       }
     });
 
@@ -66,17 +65,21 @@ const socialUrl = new URL(
   window.themeToggle = {
     toggle: () => {
       const isDark = document.documentElement.classList.contains("dark");
-      applyTheme(isDark ? "light" : "dark");
+      const newTheme = isDark ? "light" : "dark";
+      localStorage.setItem("theme", newTheme);
+      document.documentElement.classList.toggle("dark", !isDark);
       return !isDark;
     },
   };
-</script>
 
-<script>
-  // Function to initialize theme toggle
+  // Initialize theme toggle button
   function initThemeToggle() {
     const toggle = document.getElementById("theme-toggle");
     if (toggle) {
+      toggle.setAttribute(
+        "aria-checked",
+        document.documentElement.classList.contains("dark").toString()
+      );
       toggle.addEventListener("click", () => {
         const isDark = window.themeToggle?.toggle() ?? false;
         toggle.setAttribute("aria-checked", isDark.toString());
@@ -84,20 +87,35 @@ const socialUrl = new URL(
     }
   }
 
-  // Add type declaration for window.themeToggle
-  declare global {
-    interface Window {
-      themeToggle?: {
-        toggle: () => boolean;
-      };
+  // Make initThemeToggle available globally
+  window.initThemeToggle = initThemeToggle;
+
+  // Run on initial load
+  initThemeToggle();
+</script>
+
+<!-- Handle theme during view transitions -->
+<script>
+  function initThemeToggle() {
+    const toggle = document.getElementById("theme-toggle");
+    if (toggle) {
+      toggle.setAttribute(
+        "aria-checked",
+        document.documentElement.classList.contains("dark").toString()
+      );
+      toggle.addEventListener("click", () => {
+        const isDark = window.themeToggle?.toggle() ?? false;
+        toggle.setAttribute("aria-checked", isDark.toString());
+      });
     }
   }
 
-  // Initialize toggle on page load
-  initThemeToggle();
-
-  // Re-initialize toggle after page transitions
   document.addEventListener("astro:after-swap", () => {
+    const theme = localStorage.getItem("theme");
+    if (theme) {
+      document.documentElement.classList.toggle("dark", theme === "dark");
+    }
+    // Re-initialize theme toggle after page transition
     initThemeToggle();
   });
 </script>
