@@ -2,6 +2,12 @@
   "name": "gilabrewco",
   "type": "module",
   "version": "0.0.1",
+  "private": false,
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jshuntley/gilabrewco"
+  },
   "scripts": {
     "dev": "astro dev",
     "host": "astro dev --host",
