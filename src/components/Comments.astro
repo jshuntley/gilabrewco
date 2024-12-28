@@ -7,23 +7,84 @@ interface Props {
 const { title, category = "General" } = Astro.props;
 ---
 
-<div class="giscus my-8"></div>
+<div
+  class="giscus-wrapper border-t border-light-text/10 dark:border-dark-text/10 pt-8 mt-16"
+>
+  <h2 class="text-2xl font-bold mb-8 text-light-text dark:text-dark-text">
+    Comments
+  </h2>
+  <div class="giscus mb-16"></div>
+</div>
 
-<script
-  src="https://giscus.app/client.js"
-  data-repo="jshuntley/gilabrewco"
-  data-repo-id="[your-repo-id]"
-  data-category={category}
-  data-category-id="[your-category-id]"
-  data-mapping="title"
-  data-term={title}
-  data-theme="preferred_color_scheme"
-  data-reactions-enabled="1"
-  data-emit-metadata="0"
-  data-input-position="bottom"
-  data-lang="en"
-  data-loading="lazy"
-  crossorigin="anonymous"
-  async
-></script>
+<script>
+  // Wait for the DOM to be ready
+  function loadGiscus() {
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo", "jshuntley/gilabrewco");
+    script.setAttribute("data-repo-id", "R_kgDONfEO_w");
+    script.setAttribute("data-category", "Blog Comments");
+    script.setAttribute("data-category-id", "DIC_kwDONfEO_84CllKR");
+    script.setAttribute("data-mapping", "pathname");
+    script.setAttribute("data-strict", "0");
+    script.setAttribute("data-reactions-enabled", "1");
+    script.setAttribute("data-emit-metadata", "0");
+    script.setAttribute("data-input-position", "top");
+    script.setAttribute("data-theme", "preferred_color_scheme");
+    script.setAttribute("data-lang", "en");
+    script.setAttribute("data-loading", "lazy");
+    script.setAttribute("crossorigin", "anonymous");
+    script.async = true;
 
+    const container = document.querySelector(".giscus");
+    if (container) {
+      // Remove any existing Giscus script
+      const existingScript = container.querySelector("script");
+      if (existingScript) {
+        existingScript.remove();
+      }
+      container.appendChild(script);
+    }
+  }
+
+  // Load on initial page load
+  loadGiscus();
+
+  // Reload on view transitions
+  document.addEventListener("astro:after-swap", loadGiscus);
+</script>
+
+<style is:global>
+  /* Light theme */
+  :root {
+    --giscus-color-bg: var(--light-base);
+    --giscus-color-text: var(--light-text);
+    --giscus-color-primary: var(--light-accent);
+    --giscus-color-secondary: var(--light-muted);
+    --giscus-color-border: rgba(74, 75, 64, 0.1);
+  }
+
+  /* Dark theme */
+  :root[class="dark"] {
+    --giscus-color-bg: var(--dark-base);
+    --giscus-color-text: var(--dark-text);
+    --giscus-color-primary: var(--dark-accent);
+    --giscus-color-secondary: var(--dark-muted);
+    --giscus-color-border: rgba(228, 214, 167, 0.1);
+  }
+
+  /* Giscus container styles */
+  .giscus-wrapper {
+    margin-top: 2rem;
+  }
+
+  .giscus {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Fix iframe width on mobile */
+  .giscus-frame {
+    width: 100% !important;
+  }
+</style>
