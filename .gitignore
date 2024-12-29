@@ -30,3 +30,7 @@ Thumbs.db
 # Cloudflare
 .cloudflare/
 .wrangler/
+
+# Keep upload directories but ignore specific files
+!public/assets/blog/.gitkeep
+!public/assets/images/.gitkeep

@@ -18,8 +18,8 @@ site_domain: gilabrewco.pages.dev
 preview_path: "blog/{{slug}}"
 preview_path_date_field: "publishDate"
 
-media_folder: "public/assets/images/"
-public_folder: "/assets/images/"
+media_folder: "public/assets/blog"
+public_folder: "/assets/blog"
 
 collections:
   - name: "blog"
@@ -38,6 +38,8 @@ collections:
           widget: "image",
           required: false,
           media_folder: "/assets/blog",
+          public_folder: "/assets/blog",
+          choose_url: true,
         }
       - {
           label: "Tags",
