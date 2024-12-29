@@ -38,8 +38,6 @@ collections:
           name: "image",
           widget: "image",
           required: false,
-          media_folder: "public/assets/images/blog", # Specific folder for blog images
-          public_folder: "/assets/images/blog", # Public URL path for blog images
           choose_url: true,
         }
       - {
