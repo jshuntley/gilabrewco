@@ -18,8 +18,9 @@ site_domain: gilabrewco.pages.dev
 preview_path: "blog/{{slug}}"
 preview_path_date_field: "publishDate"
 
-media_folder: "public/assets/blog"
-public_folder: "/assets/blog"
+# Global media settings
+media_folder: "public/assets/images" # Where files will be uploaded in the repo
+public_folder: "/assets/images" # The src attribute in published content
 
 collections:
   - name: "blog"
@@ -37,8 +38,8 @@ collections:
           name: "image",
           widget: "image",
           required: false,
-          media_folder: "/assets/blog",
-          public_folder: "/assets/blog",
+          media_folder: "/assets/images/blog", # Specific folder for blog images
+          public_folder: "/assets/images/blog", # Public URL path for blog images
           choose_url: true,
         }
       - {
