@@ -2,7 +2,7 @@
 title: Brewhouse Updates
 description: A brief update on the last three brews.
 publishDate: 2024-12-29T14:59:00.000Z
-image: /assets/images/blog/dall·e-2024-12-29-13.58.32-a-cozy-beer-brewery-decorated-for-christmas-featuring-a-warm-and-inviting-interior-with-string-lights-garlands-and-ornaments.-the-brewery-has-woode.webp
+image: /assets/images/blog/christmas.jpg
 tags:
   - updates
 ---
