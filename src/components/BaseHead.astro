@@ -8,10 +8,20 @@ export interface Props {
   description: string;
   permalink: string;
   ogImage?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
 }
 
-const { title, description, permalink, ogImage } = Astro.props;
-const defaultOgImage = new URL("assets/social.png", Astro.site).href;
+const {
+  title,
+  description,
+  permalink,
+  ogImage,
+  ogImageWidth = 1200,
+  ogImageHeight = 630,
+} = Astro.props;
+
+const defaultOgImage = new URL("assets/images/hero-bg.jpg", Astro.site).href;
 ---
 
 <!-- Global Metadata -->
@@ -34,8 +44,9 @@ const defaultOgImage = new URL("assets/social.png", Astro.site).href;
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImage || defaultOgImage} />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
+<meta property="og:image:width" content={ogImageWidth.toString()} />
+<meta property="og:image:height" content={ogImageHeight.toString()} />
+<meta property="og:image:alt" content={title} />
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
@@ -44,6 +55,7 @@ const defaultOgImage = new URL("assets/social.png", Astro.site).href;
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage || defaultOgImage} />
+<meta name="twitter:image:alt" content={title} />
 
 <!-- Theme handling script -->
 <script is:inline>
