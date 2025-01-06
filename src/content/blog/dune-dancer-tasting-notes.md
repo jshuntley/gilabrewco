@@ -2,7 +2,7 @@
 title: Dune Dancer Tasting Notes
 description: Flagship hazy IPA tasing notes
 publishDate: 2025-01-05T15:46:00.000Z
-image: /assets/images/blog/img_0983.jpg
+image: /assets/images/blog/img_0988.jpg
 tags:
   - tasting
 ---
