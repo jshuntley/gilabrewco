@@ -1,10 +1,11 @@
 {
-  "id": "04",
+  "notes": "The first version of this brew came out beautifully, but I wanted to experiment with some new ingredients to really dial it in. Currently, I'm trying to find some free time to get this one brewed! Will update as soon as I can.",
+  "details": "Testing different ingredients for our flagship hazy.",
   "name": "Dune Dancer GP",
-  "description": "This is another version of our Dune Dancer Hazy this time made with Golden Promise pale malt.",
-  "style": "Hazy IPA",
-  "abv": 7.4,
-  "status": "waiting for ingredients",
   "date": "2025-03-08T12:07:00.000Z",
-  "details": "Testing new ingredients for our flagship hazy."
+  "style": "Hazy IPA",
+  "status": "upcoming",
+  "abv": 7.4,
+  "id": "04",
+  "description": "This is another version of our Dune Dancer Hazy this time made with Golden Promise pale malt."
 }
