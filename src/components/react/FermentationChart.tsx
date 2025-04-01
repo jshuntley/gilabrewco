@@ -8,6 +8,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  type TooltipItem,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
@@ -29,12 +30,16 @@ const colors = {
     accent: '#b8956c',
     background: '#ffffff',
     grid: 'rgba(31, 41, 55, 0.1)',
+    tooltipBackground: '#ffffff',
+    tooltipBorder: '#e5e7eb',
   },
   dark: {
     text: '#e4d6a7',
     accent: '#e9b872',
     background: '#1f2937',
     grid: 'rgba(228, 214, 167, 0.1)',
+    tooltipBackground: '#374151',
+    tooltipBorder: '#4b5563',
   }
 };
 
@@ -237,12 +242,12 @@ export default function FermentationChart({ brewfatherId }: Props) {
               align: 'start' as const,
             },
             tooltip: {
-              backgroundColor: theme.background,
+              backgroundColor: theme.tooltipBackground,
               titleColor: theme.text,
               bodyColor: theme.text,
-              borderColor: theme.grid,
-              borderWidth: 0,
-              padding: 8,
+              borderColor: theme.tooltipBorder,
+              borderWidth: 1,
+              padding: 12,
               callbacks: {
                 label: function(context: { dataset: { label?: string, yAxisID?: string }, parsed: { y: number | null } }): string {
                   let label = context.dataset.label || '';
@@ -256,8 +261,17 @@ export default function FermentationChart({ brewfatherId }: Props) {
                       : value.toFixed(1);
                   }
                   return label;
+                },
+                labelColor: function(tooltipItem: TooltipItem<"line">) {
+                  const dataset = tooltipItem.chart.data.datasets[tooltipItem.datasetIndex];
+                  return {
+                    backgroundColor: dataset.borderColor as string,
+                    borderColor: 'transparent'
+                  };
                 }
-              }
+              },
+              displayColors: true,
+              boxPadding: 4
             }
           },
           elements: {
