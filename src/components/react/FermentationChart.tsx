@@ -64,6 +64,10 @@ function formatBrewfatherDate(timestamp: number) {
   }).format(date);
 }
 
+function celsiusToFahrenheit(celsius: number): number {
+  return (celsius * 9/5) + 32;
+}
+
 export default function FermentationChart({ brewfatherId }: Props) {
   const [error, setError] = useState("");
   const [readings, setReadings] = useState<BrewfatherReading[]>([]);
@@ -137,8 +141,8 @@ export default function FermentationChart({ brewfatherId }: Props) {
     labels: readings.map(r => formatBrewfatherDate(r.time)),
     datasets: [
       {
-        label: "Temperature (°C)",
-        data: readings.map(r => r.temp),
+        label: "Temperature (°F)", // Changed from °C to °F
+        data: readings.map(r => celsiusToFahrenheit(r.temp)),
         borderColor: theme.accent,
         backgroundColor: `${theme.accent}33`,
         yAxisID: "temp",
@@ -186,7 +190,7 @@ export default function FermentationChart({ brewfatherId }: Props) {
               border: { display: false },
               title: {
                 display: true,
-                text: "Temperature (°C)",
+                text: "Temperature (°F)", // Changed from °C to °F
                 color: theme.text,
               },
               grid: {
@@ -271,4 +275,4 @@ export default function FermentationChart({ brewfatherId }: Props) {
       />
     </div>
   );
-} 
+}
